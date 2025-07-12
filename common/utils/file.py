@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 
 def get_file_extension(file_name: str) -> str:
@@ -11,7 +11,7 @@ def get_file_extension(file_name: str) -> str:
     Returns:
         str: 업로드 파일의 확장자명
     """
-    return os.path.splitext(file_name)[1].lower()[1:]
+    return Path(file_name).suffix.lstrip('.')
 
 
 def is_valid_extension(allowed_extensions: dict, file_name: str) -> bool:

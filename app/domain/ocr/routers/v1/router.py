@@ -17,4 +17,4 @@ async def index():
 @router.post('/')
 async def ocr(file:UploadFile = File(...)):
     validate_upload_file(file)
-    return await ocr_service.handle_ocr()
+    return await ocr_service.handle_ocr(file)
