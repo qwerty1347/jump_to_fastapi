@@ -7,7 +7,7 @@ from http import HTTPStatus
 from common.response import error_response
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+async def validate_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     """
     RequestValidationError 예외 처리 함수
 
@@ -15,8 +15,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     JSONResponse를 반환하여 클라이언트에게 에러 메시지를 전송
     """
     errors = exc.errors()
-    error_message = [error['msg'] for error in errors]
-    return error_response(HTTPStatus.UNPROCESSABLE_ENTITY, ", ".join(error_message))
+    error_message = "; ".join([f"field {error['loc']} - {error['msg']}" for error in errors])
+    return error_response(HTTPStatus.UNPROCESSABLE_ENTITY, error_message)
 
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
@@ -35,5 +35,5 @@ def register_exception_handlers(app):
 
     RequestValidationError, StarletteHTTPException 예외 처리 핸들러를 등록
     """
-    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(RequestValidationError, validate_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)

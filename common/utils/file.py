@@ -3,7 +3,7 @@ from pathlib import Path
 
 def get_file_extension(file_name: str) -> str:
     """
-    업로드 파일의 확장자명을 반환
+    업로드 파일의 확장자명을 반환하는 함수
 
     Args:
         file_name (str): 업로드 파일의 이름
@@ -14,9 +14,9 @@ def get_file_extension(file_name: str) -> str:
     return Path(file_name).suffix.lstrip('.')
 
 
-def is_valid_extension(allowed_extensions: dict, file_name: str) -> bool:
+def is_allowed_extension(allowed_extensions: dict, file_name: str) -> bool:
     """
-    업로드 파일의 확장자가 허용된 목록인지 확인
+    업로드 파일의 확장자가 허용된 목록인지 확인하는 함수
 
     Args:
         allowed_extensions (dict): 허용된 확장자 목록

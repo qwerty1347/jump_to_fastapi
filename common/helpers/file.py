@@ -10,7 +10,7 @@ from config.settings import settings
 
 async def save_file(file: UploadFile) -> Path:
     """
-    주어진 업로드 파일을 저장하는 비동기 함수
+    주어진 업로드 파일을 저장하는 함수
 
     매개변수:
     - file (UploadFile): 저장할 업로드 파일
@@ -29,3 +29,14 @@ async def save_file(file: UploadFile) -> Path:
         f.write(contents)
 
     return file_path
+
+
+async def delete_file(file_path: Path):
+    """
+    주어진 파일 경로의 파일을 삭제하는 함수
+
+    매개변수:
+    - file_path (Path): 삭제할 파일의 경로
+    """
+    if file_path.exists():
+        file_path.unlink()

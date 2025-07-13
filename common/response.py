@@ -2,10 +2,12 @@ from http import HTTPStatus
 
 from fastapi.responses import JSONResponse
 
+from common.constants.http_code_constants import HttpCodeConstants
+
 
 def success_response(data: dict = None, code: int = HTTPStatus.OK) -> JSONResponse:
     """
-    성공 응답을 생성하는 함수입니다.
+    성공 응답을 생성하는 함수
 
     매개변수:
     - data (dict): 응답 데이터 (기본값: None)
@@ -27,12 +29,12 @@ def success_response(data: dict = None, code: int = HTTPStatus.OK) -> JSONRespon
     )
 
 
-def error_response(code: int = HTTPStatus.INTERNAL_SERVER_ERROR, message: str = "Internal Server Error") -> JSONResponse:
+def error_response(code: int = HttpCodeConstants.UNKNOWN_ERROR, message: str = "Internal Server Error") -> JSONResponse:
     """
-    오류 응답을 생성하는 함수입니다.
+    오류 응답을 생성하는 함수
 
     매개변수:
-    - code (int): HTTP 상태 코드 (기본값: HTTPStatus.INTERNAL_SERVER_ERROR)
+    - code (int): HTTP 상태 코드 (기본값: 520)
     - message (str): 오류 메시지 (기본값: "Internal Server Error")
 
     반환값:

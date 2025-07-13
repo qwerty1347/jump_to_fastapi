@@ -2,6 +2,8 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN pip install --upgrade pip setuptools wheel
+
 COPY ./app /app
 
 COPY requirements.txt ./requirements.txt
