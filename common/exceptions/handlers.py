@@ -15,8 +15,8 @@ async def validate_exception_handler(request: Request, exc: RequestValidationErr
     JSONResponse를 반환하여 클라이언트에게 에러 메시지를 전송
     """
     errors = exc.errors()
-    error_message = [error['msg'] for error in errors]
-    return error_response(HTTPStatus.UNPROCESSABLE_ENTITY, ", ".join(error_message))
+    error_message = "; ".join([f"field {error['loc']} - {error['msg']}" for error in errors])
+    return error_response(HTTPStatus.UNPROCESSABLE_ENTITY, error_message)
 
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
