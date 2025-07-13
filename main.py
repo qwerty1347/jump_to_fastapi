@@ -11,6 +11,7 @@ register_exception_handlers(app)
 for router in get_api_routers():
     app.include_router(router)
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello FastAPI"}

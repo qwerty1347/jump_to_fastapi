@@ -7,7 +7,7 @@ from http import HTTPStatus
 from common.response import error_response
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+async def validate_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     """
     RequestValidationError 예외 처리 함수
 
@@ -35,5 +35,5 @@ def register_exception_handlers(app):
 
     RequestValidationError, StarletteHTTPException 예외 처리 핸들러를 등록
     """
-    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(RequestValidationError, validate_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)

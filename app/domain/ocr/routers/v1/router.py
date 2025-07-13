@@ -1,10 +1,11 @@
 from fastapi import APIRouter, File, UploadFile
 
 from app.domain.ocr.services.ocr_service import OcrService
-from app.domain.ocr.validators.file_validator import validate_upload_file
+from app.domain.ocr.validators.file import validate_upload_file
+from common.constants.route import OCR_PREFIX, OCR_TAG
 
 
-router = APIRouter(prefix="/ocr", tags=["OCR"])
+router = APIRouter(prefix=OCR_PREFIX, tags=[OCR_TAG])
 
 ocr_service = OcrService()
 
