@@ -17,10 +17,16 @@ pydantic==2.11.5              # 데이터 모델/검증용 라이브러리 (v2 �
 pydantic_settings==2.10.1     # BaseSettings 분리된 설정 관리 전용 패키지
 
 # -----------------------------
-# 파일 업로드 및 OCR
+# 파일 업로드
 # -----------------------------
-python-multipart==0.0.20      # FastAPI에서 multipart/form-data 요청 파싱
-easyocr==1.7.2                # 이미지에서 텍스트 인식 (OCR 기능)
+python-multipart==0.0.20      # FastAPI에서 multipart/form-data 요청 파싱용 라이브러리
+
+# -----------------------------
+# OCR
+# -----------------------------
+easyocr==1.7.2                # OCR (PyTorch 기반, 간단하고 빠른 텍스트 인식 라이브러리)
+paddleocr                     # OCR (PaddlePaddle 기반, 다양한 언어 및 고성능 지원)
+paddlepaddle                  # PaddlePaddle CPU 버전 (CPU 전용 딥러닝 프레임워크)
 
 # -----------------------------
 # MySQL (비동기) ORM 관련
