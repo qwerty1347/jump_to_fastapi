@@ -5,9 +5,9 @@ from app.domain.ocr.engines.base_engine import BaseEngine
 
 class EasyOcr(BaseEngine):
     def __init__(self):
-        pass
+        self.easyocr = easyocr.Reader(['ko', 'en'])
 
-    async def recognize(self, file_path: str):
+    async def recognize(self, file_path: str) -> list[str]:
         """
         이미지 파일에서 텍스트를 추출하는 함수
 
@@ -17,11 +17,10 @@ class EasyOcr(BaseEngine):
         반환값:
         - list[str]: 이미지에서 추출된 텍스트 목록
         """
-        reader = easyocr.Reader(['ko', 'en'], gpu=True)
-        results = reader.readtext(file_path)
+        result = self.easyocr.readtext(file_path)
         ocr_texts = []
 
-        for bbox, text, prob in results:
+        for bbox, text, prob in result:
             ocr_texts.append(text.strip())
 
         return ocr_texts

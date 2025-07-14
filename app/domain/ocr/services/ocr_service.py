@@ -11,10 +11,12 @@ class OcrService():
     def __init__(self):
         pass
 
-    async def handle_ocr(self, file: UploadFile):
+    async def handle_ocr(self, file: UploadFile, engine: str):
         try:
             file_path = await save_file(file)
-            ocr_engine = OcrModule(engine="easyocr")
+            print(engine)
+            return "DONE"
+            ocr_engine = OcrModule(engine)
             ocr_result = await ocr_engine.recognize(str(file_path))
 
             print(ocr_result)
