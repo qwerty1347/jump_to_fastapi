@@ -15,5 +15,5 @@ def validate_upload_file(file: UploadFile):
     Raises:
         HTTPException: 파일이 허용되지 않은 경우
     """
-    if not is_allowed_extension(ALLOWED_EXTENSIONS, file.filename):
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="확장자가 유효하지 않습니다.")
+    if not is_allowed_extension(file.filename, ALLOWED_EXTENSIONS):
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="지원하지 않는 파일입니다.")

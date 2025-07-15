@@ -14,13 +14,13 @@ def get_file_extension(file_name: str) -> str:
     return Path(file_name).suffix.lstrip('.')
 
 
-def is_allowed_extension(allowed_extensions: dict, file_name: str) -> bool:
+def is_allowed_extension(file_name: str, allowed_extensions: dict) -> bool:
     """
     업로드 파일의 확장자가 허용된 목록인지 확인하는 함수
 
     Args:
-        allowed_extensions (dict): 허용된 확장자 목록
         file_name (str): 업로드 파일의 이름
+        allowed_extensions (dict): 허용된 확장자 목록
 
     Returns:
         bool: 허용된 확장자 목록에 포함되어 있으면 True, 아니면 False

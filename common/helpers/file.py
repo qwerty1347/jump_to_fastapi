@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 from fastapi import UploadFile
 
-from common.constants.route import OCR_PREFIX
+from common.constants.route import RouteConstants
 from common.utils.file import get_file_extension
 from config.settings import settings
 
@@ -19,7 +19,7 @@ async def save_file(file: UploadFile) -> Path:
     - Path: 저장된 파일의 경로
     """
     contents = await file.read()
-    upload_dir = Path(settings.UPLOAD_PATH) / OCR_PREFIX.strip('/')
+    upload_dir = Path(settings.UPLOAD_PATH) / RouteConstants.OCR_PREFIX.strip('/')
     file_name = f"{int(time.time())}.{get_file_extension(file.filename)}"
     file_path = upload_dir / file_name
 

@@ -1,11 +1,12 @@
 from app.domain.ocr.engines.easyocr import EasyOcr
 from app.domain.ocr.engines.paddleocr import PaddleOcr
+from common.constants.ocr import OcrConstants
 
 
 class OcrModule:
     OCR_ENGINES = {
-        "easyocr": EasyOcr,
-        "paddleocr": PaddleOcr
+        OcrConstants.EASY_OCR: EasyOcr,
+        OcrConstants.PADDLE_OCR: PaddleOcr
     }
 
     def __init__(self, engine: str):

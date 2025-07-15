@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from fastapi.responses import JSONResponse
 
-from common.constants.http_code_constants import HttpCodeConstants
+from common.constants.http_code import HttpCodeConstants
 
 
 def success_response(data: dict = None, code: int = HTTPStatus.OK) -> JSONResponse:

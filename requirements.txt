@@ -1,42 +1,42 @@
 # -----------------------------
-# FastAPI & ASGI 서버
+# FastAPI & ASGI Server
 # -----------------------------
-fastapi==0.110.0              # FastAPI 웹 프레임워크
-uvicorn[standard]==0.34.3     # ASGI 서버 (자동 재시작, 로그, uvloop 등 포함된 표준 extras)
+fastapi==0.110.0              # FastAPI web framework
+uvicorn[standard]==0.34.3     # ASGI server (includes auto-reload, logging, uvloop, etc.)
 
 # -----------------------------
-# 설정 관리 및 시간 처리
+# Configuration management & time handling
 # -----------------------------
-python-decouple==3.8          # 환경변수(.env) 설정을 쉽게 로드
-pytz==2025.2                  # 표준 시간대(tz) 지원 (datetime 관련)
+python-decouple==3.8          # Easy loading of environment variables (.env)
+pytz==2025.2                  # Timezone support (related to datetime)
 
 # -----------------------------
-# 데이터 유효성 검사
+# Data validation
 # -----------------------------
-pydantic==2.11.5              # 데이터 모델/검증용 라이브러리 (v2 기반)
-pydantic_settings==2.10.1     # BaseSettings 분리된 설정 관리 전용 패키지
+pydantic==2.11.5              # Data modeling/validation library (based on v2)
+pydantic_settings==2.10.1     # Dedicated package for BaseSettings configuration management
 
 # -----------------------------
-# 파일 업로드
+# File upload
 # -----------------------------
-python-multipart==0.0.20      # FastAPI에서 multipart/form-data 요청 파싱용 라이브러리
+python-multipart==0.0.20      # Parses multipart/form-data requests in FastAPI
 
 # -----------------------------
 # OCR
 # -----------------------------
-easyocr==1.7.2                # OCR (PyTorch 기반, 간단하고 빠른 텍스트 인식 라이브러리)
-paddleocr                     # OCR (PaddlePaddle 기반, 다양한 언어 및 고성능 지원)
-paddlepaddle                  # PaddlePaddle CPU 버전 (CPU 전용 딥러닝 프레임워크)
+easyocr==1.7.2                # OCR (PyTorch-based, simple and fast text recognition)
+paddleocr                     # OCR (PaddlePaddle-based, supports multiple languages and high performance)
+paddlepaddle                  # PaddlePaddle CPU version (CPU-only deep learning framework)
 
 # -----------------------------
-# MySQL (비동기) ORM 관련
+# MySQL (async) ORM related
 # -----------------------------
-SQLAlchemy==2.0.41            # SQL ORM (비동기 지원 포함된 최신 버전)
-aiomysql==0.2.0               # MySQL용 비동기 드라이버
-alembic==1.13.1               # SQLAlchemy용 DB 마이그레이션 도구
+SQLAlchemy==2.0.41            # SQL ORM (latest version with async support)
+aiomysql==0.2.0               # Async driver for MySQL
+alembic==1.13.1               # DB migration tool for SQLAlchemy
 
 # -----------------------------
-# MongoDB (비동기 ODM) 관련
+# MongoDB (async ODM) related
 # -----------------------------
-motor==3.7.1                  # MongoDB용 비동기 드라이버
-beanie==1.29.0                # Pydantic + Motor 기반 ODM (MongoDB 문서 모델링)
+motor==3.7.1                  # Async driver for MongoDB
+beanie==1.29.0                # ODM based on Pydantic + Motor (MongoDB document modeling)
