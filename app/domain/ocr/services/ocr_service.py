@@ -1,5 +1,8 @@
 from fastapi import UploadFile
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
+from app.domain.ocr.dtos.response import OcrResponse
 from app.domain.ocr.modules.ocr_module import OcrModule
 from common.helpers.file import delete_file, save_file
 from common.response import success_response, error_response
@@ -9,14 +12,17 @@ class OcrService():
     def __init__(self):
         pass
 
-    async def handle_ocr(self, file: UploadFile, engine: str):
+    async def handle_ocr(self, file: UploadFile, engine: str) -> JSONResponse:
         try:
             file_path = await save_file(file)
             ocr_engine = OcrModule(engine)
             ocr_result = await ocr_engine.recognize(str(file_path))
+            
+            response = OcrResponse(
+                ocr_result = ocr_result
+            )
 
-            print(ocr_result)
-            return success_response()
+            return success_response(jsonable_encoder(response))
 
         except Exception as e:
             return error_response(message=str(e))
