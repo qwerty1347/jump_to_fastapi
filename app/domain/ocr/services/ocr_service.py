@@ -1,5 +1,3 @@
-import easyocr
-
 from fastapi import UploadFile
 
 from app.domain.ocr.modules.ocr_module import OcrModule
@@ -14,8 +12,6 @@ class OcrService():
     async def handle_ocr(self, file: UploadFile, engine: str):
         try:
             file_path = await save_file(file)
-            print(engine)
-            return "DONE"
             ocr_engine = OcrModule(engine)
             ocr_result = await ocr_engine.recognize(str(file_path))
 
