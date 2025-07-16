@@ -13,6 +13,16 @@ class OcrService():
         pass
 
     async def handle_ocr(self, file: UploadFile, engine: str) -> JSONResponse:
+        """
+        OCR 엔진을 동작하여 업로드된 이미지의 텍스트를 추출하는 함수
+
+        매개변수:
+        - file (UploadFile): 업로드된 이미지 파일
+        - engine (str): 사용할 OCR 엔진
+
+        반환값:
+        - JSONResponse: 추출된 텍스트 목록을 담은 JSON 응답
+        """
         try:
             file_path = await save_file(file)
             ocr_engine = OcrModule(engine)
