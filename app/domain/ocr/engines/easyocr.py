@@ -1,26 +1,33 @@
 import easyocr
 
+from fastapi import UploadFile
+
 from app.domain.ocr.engines.base_engine import BaseEngine
+from common.helpers.file import delete_file, save_file
 
 
 class EasyOcr(BaseEngine):
     def __init__(self):
         self.easyocr = easyocr.Reader(['ko', 'en'])
 
-    async def recognize(self, file_path: str) -> list[str]:
-        """
-        이미지 파일에서 텍스트를 추출하는 함수
+    async def recognize(self, file: UploadFile) -> dict:
+        file_path = await save_file(file)
+        ocr_result = self.convert_to_json(self.easyocr.readtext(str(file_path)))
+        await delete_file(file_path)
+        return ocr_result
 
-        매개변수:
-        - file_path (str): OCR을 수행할 이미지 파일의 경로
 
-        반환값:
-        - list[str]: 이미지에서 추출된 텍스트 목록
-        """
-        result = self.easyocr.readtext(file_path)
-        ocr_texts = []
+    def convert_to_json(self, ocr_result) -> dict:
+        result = {
+            "images": []
+        }
 
-        for bbox, text, prob in result:
-            ocr_texts.append(text.strip())
+        for poly, text, confidence in ocr_result:
+            bounding_poly: list[list[int]] = [[int(vertex[0]), int(vertex[1])] for vertex in poly]
+            result["images"].append({
+                "boundingPoly": bounding_poly,
+                "text": text,
+                "confidence": float(confidence)
+            })
 
-        return ocr_texts
+        return result

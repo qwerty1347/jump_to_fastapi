@@ -22,7 +22,7 @@ pydantic_settings==2.10.1     # Dedicated package for BaseSettings configuration
 python-multipart==0.0.20      # Parses multipart/form-data requests in FastAPI
 
 # -----------------------------
-# OCR
+# OCR (Optical Character Recognition)
 # -----------------------------
 easyocr==1.7.2                # OCR (PyTorch-based, simple and fast text recognition)
 paddleocr                     # OCR (PaddlePaddle-based, supports multiple languages and high performance)
@@ -40,3 +40,8 @@ alembic==1.13.1               # DB migration tool for SQLAlchemy
 # -----------------------------
 motor==3.7.1                  # Async driver for MongoDB
 beanie==1.29.0                # ODM based on Pydantic + Motor (MongoDB document modeling)
+
+# -----------------------------
+# HTTP Client
+# -----------------------------
+httpx                         # HTTP client with async/sync support (used for calling external APIs, testing, etc.)

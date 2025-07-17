@@ -3,4 +3,4 @@ from pydantic import BaseModel
 
 
 class OcrResponse(BaseModel):
-       ocr_result: List[str]
+       ocr_result: dict
