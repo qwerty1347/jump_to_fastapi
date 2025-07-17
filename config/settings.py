@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     LOG_PATH: str
     UPLOAD_PATH: str
 
+    CLOVA_OCR_SECRET_KEY: str
+    CLOVA_OCR_APIGW_INVOKE_URL: str
+
     class Config:
         env_file = ".env"
         extra = "allow"

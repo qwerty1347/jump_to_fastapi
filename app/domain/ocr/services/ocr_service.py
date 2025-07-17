@@ -24,10 +24,9 @@ class OcrService():
         - JSONResponse: 추출된 텍스트 목록을 담은 JSON 응답
         """
         try:
-            file_path = await save_file(file)
             ocr_engine = OcrModule(engine)
-            ocr_result = await ocr_engine.recognize(str(file_path))
-            
+            ocr_result = await ocr_engine.recognize(file)
+
             response = OcrResponse(
                 ocr_result = ocr_result
             )
@@ -36,6 +35,3 @@ class OcrService():
 
         except Exception as e:
             return error_response(message=str(e))
-
-        finally:
-            await delete_file(file_path)
