@@ -1,14 +1,20 @@
 import easyocr
 
+from fastapi import UploadFile
+
 from app.domain.ocr.engines.base_engine import BaseEngine
+from common.helpers.file import delete_file, save_file
 
 
 class EasyOcr(BaseEngine):
     def __init__(self):
         self.easyocr = easyocr.Reader(['ko', 'en'])
 
-    async def recognize(self, file_path: str) -> dict:
-        return self.convert_to_json(self.easyocr.readtext(file_path))
+    async def recognize(self, file: UploadFile) -> dict:
+        file_path = await save_file(file)
+        ocr_result = self.convert_to_json(self.easyocr.readtext(str(file_path)))
+        await delete_file(file_path)
+        return ocr_result
 
 
     def convert_to_json(self, ocr_result) -> dict:

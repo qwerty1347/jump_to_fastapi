@@ -1,14 +1,19 @@
+from fastapi import UploadFile
 from paddleocr import PaddleOCR
 
 from app.domain.ocr.engines.base_engine import BaseEngine
+from common.helpers.file import delete_file, save_file
 
 
 class PaddleOcr(BaseEngine):
     def __init__(self):
         self.paddleocr = PaddleOCR(lang='korean', use_angle_cls=False)
 
-    async def recognize(self, file_path: str) -> dict:
-        return self.convert_to_json(self.paddleocr.ocr(file_path))
+    async def recognize(self, file: UploadFile) -> dict:
+        file_path = await save_file(file)
+        ocr_result = self.convert_to_json(self.paddleocr.ocr(str(file_path)))
+        await delete_file(file_path)
+        return ocr_result
 
 
     def convert_to_json(self, ocr_result) -> dict:

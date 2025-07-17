@@ -1,3 +1,5 @@
+from fastapi import UploadFile
+
 from app.domain.ocr.engines.easyocr import EasyOcr
 from app.domain.ocr.engines.paddleocr import PaddleOcr
 from common.constants.ocr import OcrConstants
@@ -6,7 +8,7 @@ from common.constants.ocr import OcrConstants
 class OcrModule:
     OCR_ENGINES = {
         OcrConstants.EASY_OCR: EasyOcr,
-        OcrConstants.PADDLE_OCR: PaddleOcr
+        OcrConstants.PADDLE_OCR: PaddleOcr,
     }
 
     def __init__(self, engine: str):
@@ -23,6 +25,6 @@ class OcrModule:
         return ocr_engine()
 
 
-    async def recognize(self, file_path: str):
+    async def recognize(self, file: UploadFile):
         ocr_engine = self._get_engine_instance()
-        return await ocr_engine.recognize(file_path)
+        return await ocr_engine.recognize(file)
