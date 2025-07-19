@@ -2,7 +2,12 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    DB_HOST: str
     DB_PORT: int
+    DB_DATABASE: str
+    DB_USERNAME: str
+    DB_PASSWORD: str
+
     MONGO_DB_PORT: int
 
     LOG_PATH: str
