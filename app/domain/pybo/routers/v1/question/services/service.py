@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.question.repositories.question_repository import QuestionRepository
+from app.domain.pybo.routers.v1.question.repositories.repository import QuestionRepository
 from common.response import error_response
 
 

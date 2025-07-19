@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.domain.ocr.routers.v1.router import router as ocr_router
-from app.domain.pybo.routers.v1.pybo_router import router as pybo_router
+from app.domain.pybo.routers.v1.router import router as pybo_router
 from common.constants.route import RouteConstants
 
 

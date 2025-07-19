@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.question.services.question_service import QuestionService
+from app.domain.pybo.routers.v1.question.services.service import QuestionService
 from databases.mysql.session import get_mysql_session
 
 
