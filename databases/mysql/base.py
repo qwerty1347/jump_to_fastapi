@@ -6,4 +6,4 @@ class Base(DeclarativeBase):
 
 class TimestampMixin:
     created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, nullable=True, default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime, nullable=True, onupdate=func.now())
