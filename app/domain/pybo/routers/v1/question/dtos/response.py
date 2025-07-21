@@ -6,6 +6,9 @@ from app.domain.pybo.routers.v1.question.dtos.base import QuestionBase
 
 
 class QuestionResponse(QuestionBase):
+    id: int
+    subject: str
+    content: str
     created_at: datetime
     updated_at: datetime | None = None
 

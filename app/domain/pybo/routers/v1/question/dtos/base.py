@@ -3,8 +3,4 @@ from pydantic import ConfigDict
 
 
 class QuestionBase(BaseModel):
-    id: int
-    subject: str
-    content: str
-
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, orm_mode=True)
