@@ -9,7 +9,7 @@ class QuestionRepository:
     def __init__(self):
         pass
 
-    async def get_question_list(self, db: AsyncSession) -> List[Question]:
+    async def get_questions(self, db: AsyncSession) -> List[Question]:
         """
         Question 리스트를 가져오는 비동기 메서드
 
@@ -25,7 +25,7 @@ class QuestionRepository:
         return questions
 
 
-    async def get_question_item(self, db:AsyncSession, question_id: int) -> Question | None:
+    async def get_question(self, db:AsyncSession, question_id: int) -> Question | None:
         """
         Question 하나를 가져오는 비동기 메서드
 
@@ -42,7 +42,7 @@ class QuestionRepository:
         return question
 
 
-    async def create_item(self, db: AsyncSession, item: dict) -> Question:
+    async def create_question(self, db: AsyncSession, item: dict) -> Question:
         """
         Question을 생성하는 비동기 메서드
 
@@ -60,7 +60,7 @@ class QuestionRepository:
         return question
 
 
-    async def update_item(self, db: AsyncSession, question_id: int, form_data: dict) -> int:
+    async def update_question_by_question_id(self, db: AsyncSession, question_id: int, form_data: dict) -> int:
         """
         Question을 수정하는 비동기 메서드
 
@@ -76,7 +76,7 @@ class QuestionRepository:
         return result.rowcount
 
 
-    async def delete_item(self, db: AsyncSession, question_id: int) -> int:
+    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int) -> int:
         """
         Question을 삭제하는 비동기 메서드
 

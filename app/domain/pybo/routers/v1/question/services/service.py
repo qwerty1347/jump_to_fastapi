@@ -14,7 +14,8 @@ class QuestionService():
     def __init__(self):
         self.question_repository = QuestionRepository()
 
-    async def get_question_list(self, db: AsyncSession) -> JSONResponse:
+
+    async def get_questions(self, db: AsyncSession) -> JSONResponse:
         """
         Question 리스트를 가져오는 비동기 서비스
 
@@ -25,7 +26,7 @@ class QuestionService():
         - JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
         """
         try:
-            response = await self.question_repository.get_question_list(db)
+            response = await self.question_repository.get_questions(db)
             response_model = [QuestionItemResponse.model_validate(item) for item in response]
 
             return success_response(jsonable_encoder(response_model))
@@ -37,7 +38,7 @@ class QuestionService():
             return error_response(message=str(e))
 
 
-    async def get_question_item(self, db: AsyncSession, question_id: int) -> JSONResponse:
+    async def get_question(self, db: AsyncSession, question_id: int) -> JSONResponse:
         """
         Question 하나를 가져오는 비동기 서비스
 
@@ -49,7 +50,7 @@ class QuestionService():
         - JSONResponse: Question 하나가 포함된 성공 응답을 반환합니다.
         """
         try:
-            response = await self.question_repository.get_question_item(db, question_id)
+            response = await self.question_repository.get_question(db, question_id)
             response_model = QuestionItemResponse.model_validate(response)
 
             return success_response(jsonable_encoder(response_model))
@@ -58,7 +59,7 @@ class QuestionService():
             return error_response(message=str(e))
 
 
-    async def create_item(self, db: AsyncSession, create_dto: QuestionRequest) -> JSONResponse:
+    async def create_question(self, db: AsyncSession, create_dto: QuestionRequest) -> JSONResponse:
         """
         Question을 생성하는 비동기 서비스 (폼 데이터)
 
@@ -71,7 +72,7 @@ class QuestionService():
         """
         try:
             async with db.begin():
-                response = await self.question_repository.create_item(db, create_dto.model_dump())
+                response = await self.question_repository.create_question(db, create_dto.model_dump())
                 response_model = QuestionItemResponse.model_validate(response)
 
                 return success_response(jsonable_encoder(response_model))
@@ -80,7 +81,7 @@ class QuestionService():
             return error_response(message=str(e))
 
 
-    async def update_item(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest) -> JSONResponse:
+    async def update_question_by_question_id(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest) -> JSONResponse:
         """
         Question을 수정하는 비동기 서비스 (폼 데이터)
 
@@ -94,14 +95,14 @@ class QuestionService():
         """
         try:
             async with db.begin():
-                response = await self.question_repository.update_item(db, question_id, update_dto.model_dump(exclude_unset=True))
+                response = await self.question_repository.update_question_by_question_id(db, question_id, update_dto.model_dump(exclude_unset=True))
                 return success_response({"rowcount": response})
 
         except Exception as e:
             return error_response(message=str(e))
 
 
-    async def delete_item(self, db: AsyncSession, question_id: int) -> JSONResponse:
+    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int) -> JSONResponse:
         """
         Question을 삭제하는 비동기 서비스
 
@@ -114,7 +115,7 @@ class QuestionService():
         """
         try:
             async with db.begin():
-                response = await self.question_repository.delete_item(db, question_id)
+                response = await self.question_repository.delete_question_by_question_id(db, question_id)
                 return success_response({"rowcount": response})
 
         except Exception as e:

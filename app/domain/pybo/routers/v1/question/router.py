@@ -16,7 +16,7 @@ answer_service = AnswerService()
 
 
 @router.get('/', response_model=QuestionResponse)
-async def get_question_list(db: AsyncSession = Depends(get_mysql_session)) -> JSONResponse:
+async def get_questions(db: AsyncSession = Depends(get_mysql_session)) -> JSONResponse:
     """
     Question 리스트를 가져오는 엔드포인트
 
@@ -27,11 +27,11 @@ async def get_question_list(db: AsyncSession = Depends(get_mysql_session)) -> JS
         JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
     """
 
-    return await question_service.get_question_list(db)
+    return await question_service.get_questions(db)
 
 
 @router.get('/{question_id}', response_model=QuestionResponse)
-async def get_question_item(
+async def get_question(
     question_id: int,
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
@@ -45,11 +45,11 @@ async def get_question_item(
     Returns:
         JSONResponse: Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.get_question_item(db, question_id)
+    return await question_service.get_question(db, question_id)
 
 
 @router.post('/form', response_model=QuestionResponse)
-async def create_item(
+async def create_question(
     form_data: QuestionRequest = Depends(parse_question_create_form),
     db: AsyncSession = Depends(get_mysql_session),
 ) -> JSONResponse:
@@ -63,11 +63,11 @@ async def create_item(
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.create_item(db, form_data)
+    return await question_service.create_question(db, form_data)
 
 
 @router.post('/json', response_model=QuestionResponse)
-async def create_item(
+async def create_question(
     json_data: QuestionRequest,
     db: AsyncSession = Depends(get_mysql_session),
 ) -> JSONResponse:
@@ -81,11 +81,11 @@ async def create_item(
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.create_item(db, json_data)
+    return await question_service.create_question(db, json_data)
 
 
 @router.put('/form/{question_id}', response_model=QuestionResponse)
-async def update_item(
+async def update_question_by_question_id(
     question_id: int = Path(...),
     update_dto: QuestionUpdateRequest = Depends(parse_question_update_form_payload),
     db: AsyncSession = Depends(get_mysql_session)
@@ -101,11 +101,11 @@ async def update_item(
     Returns:
         JSONResponse: 수정된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.update_item(db, question_id, update_dto)
+    return await question_service.update_question_by_question_id(db, question_id, update_dto)
 
 
 @router.put('/json/{question_id}', response_model=QuestionResponse)
-async def update_item_by_json(
+async def update_question_by_question_id_by_json(
     question_id: int = Path(...),
     update_dto: QuestionUpdateRequest = Depends(parse_question_update_json_payload),
     db: AsyncSession = Depends(get_mysql_session)
@@ -121,11 +121,11 @@ async def update_item_by_json(
     Returns:
         JSONResponse: 수정된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.update_item(db, question_id, update_dto)
+    return await question_service.update_question_by_question_id(db, question_id, update_dto)
 
 
 @router.delete('/{question_id}', response_model=QuestionResponse)
-async def delete_item(
+async def delete_question_by_question_id(
     question_id: int = Path(...),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
@@ -139,7 +139,7 @@ async def delete_item(
     Returns:
         JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.delete_item(db, question_id)
+    return await question_service.delete_question_by_question_id(db, question_id)
 
 
 @router.get('/{question_id}/answer')
