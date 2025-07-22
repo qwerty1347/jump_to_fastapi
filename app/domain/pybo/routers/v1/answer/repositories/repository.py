@@ -58,3 +58,21 @@ class AnswerRepository:
         answer = result.scalars().first()
 
         return answer
+
+
+    async def create_answer(self, db: AsyncSession, create_dto: dict) -> Answer:
+        """
+        answer 하나를 생성하는 비동기 메서드
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - create_dto (dict): answer 생성을 위한 폼 데이터를 전달합니다.
+
+        반환값:
+        - Answer: 생성된 answer 하나가 포함된 성공 응답을 반환합니다.
+        """
+        answer = Answer(**create_dto)
+        db.add(answer)
+        await db.flush()
+        await db.refresh(answer)
+        return answer
