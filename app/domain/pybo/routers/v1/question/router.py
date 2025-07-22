@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Path
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.domain.pybo.routers.v1.answer.services.service import AnswerService
 from app.domain.pybo.routers.v1.question.dependencies.dependency import parse_question_create_form, parse_question_update_form_payload, parse_question_update_json_payload
 from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest
 from app.domain.pybo.routers.v1.question.dtos.response import QuestionResponse
@@ -11,6 +12,7 @@ from databases.mysql.session import get_mysql_session
 
 router = APIRouter(prefix="/question", tags=["Question"])
 question_service = QuestionService()
+answer_service = AnswerService()
 
 
 @router.get('/', response_model=QuestionResponse)
@@ -138,3 +140,11 @@ async def delete_item(
         JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
     """
     return await question_service.delete_item(db, question_id)
+
+
+@router.get('/{question_id}/answer')
+async def get_answers_by_question_id(
+    question_id: int = Path(...),
+    db: AsyncSession = Depends(get_mysql_session)
+):
+    return await answer_service.get_answers_by_question_id(db, question_id)
