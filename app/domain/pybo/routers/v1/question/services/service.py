@@ -80,7 +80,7 @@ class QuestionService():
             return error_response(message=str(e))
 
 
-    async def update_item(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest):
+    async def update_item(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest) -> JSONResponse:
         """
         Question을 수정하는 비동기 서비스 (폼 데이터)
 
@@ -99,3 +99,23 @@ class QuestionService():
 
         except Exception as e:
             return error_response(message=str(e))
+
+
+    async def delete_item(self, db: AsyncSession, question_id: int) -> JSONResponse:
+        """
+        Question을 삭제하는 비동기 서비스
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - question_id (int): Question 하나의 고유 ID를 전달합니다.
+
+        반환값:
+        - JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
+        """
+        try:
+            async with db.begin():
+                response = await self.question_repository.delete_item(db, question_id)
+                return success_response({"rowcount": response})
+
+        except Exception as e:
+            error_response(message=str(e))

@@ -102,7 +102,7 @@ async def update_item(
     return await question_service.update_item(db, question_id, update_dto)
 
 
-@router.put('/json/{question_id}')
+@router.put('/json/{question_id}', response_model=QuestionResponse)
 async def update_item_by_json(
     question_id: int = Path(...),
     update_dto: QuestionUpdateRequest = Depends(parse_question_update_json_payload),
@@ -120,3 +120,21 @@ async def update_item_by_json(
         JSONResponse: 수정된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
     return await question_service.update_item(db, question_id, update_dto)
+
+
+@router.delete('/{question_id}', response_model=QuestionResponse)
+async def delete_item(
+    question_id: int = Path(...),
+    db: AsyncSession = Depends(get_mysql_session)
+) -> JSONResponse:
+    """
+    Question을 삭제하는 엔드포인트
+
+    Args:
+        question_id (int): Question 하나의 고유 ID를 전달합니다.
+        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    Returns:
+        JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
+    """
+    return await question_service.delete_item(db, question_id)
