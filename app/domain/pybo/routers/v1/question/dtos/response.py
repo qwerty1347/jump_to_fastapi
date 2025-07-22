@@ -5,7 +5,7 @@ from openai import BaseModel
 from app.domain.pybo.routers.v1.question.dtos.base import QuestionBase
 
 
-class QuestionResponse(QuestionBase):
+class QuestionItemResponse(QuestionBase):
     id: int
     subject: str
     content: str
@@ -13,7 +13,7 @@ class QuestionResponse(QuestionBase):
     updated_at: datetime | None = None
 
 
-class QuestionListResponse(BaseModel):
+class QuestionResponse(BaseModel):
     result: bool
     code: int
-    data: List[QuestionResponse]
+    data: List[QuestionItemResponse]
