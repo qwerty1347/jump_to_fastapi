@@ -9,7 +9,7 @@ from app.domain.pybo.routers.v1.question.services.service import QuestionService
 from databases.mysql.session import get_mysql_session
 
 
-router = APIRouter(prefix="/question")
+router = APIRouter(prefix="/question", tags=["Question"])
 question_service = QuestionService()
 
 
