@@ -16,3 +16,9 @@ class QuestionUpdateRequest(QuestionBase):
     model_config = {
         "extra": "forbid"
     }
+
+
+class QuestionsQueryRequest(QuestionBase):
+    page: int = 0
+    size: int = 10
+    keyword: str | None = None

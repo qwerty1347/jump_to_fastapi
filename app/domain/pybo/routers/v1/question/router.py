@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.routers.v1.answer.services.service import AnswerService
-from app.domain.pybo.routers.v1.question.dependencies.dependency import parse_question_create_form, parse_question_update_form_payload, parse_question_update_json_payload
-from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest
+from app.domain.pybo.routers.v1.question.dependencies.dependency import parse_question_create_form, parse_question_update_form_payload, parse_question_update_json_payload, parse_questions_query
+from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest, QuestionsQueryRequest
 from app.domain.pybo.routers.v1.question.dtos.response import QuestionResponse
 from app.domain.pybo.routers.v1.question.services.service import QuestionService
 from databases.mysql.session import get_mysql_session
@@ -15,19 +15,23 @@ question_service = QuestionService()
 answer_service = AnswerService()
 
 
-@router.get('/', response_model=QuestionResponse)
-async def get_questions(db: AsyncSession = Depends(get_mysql_session)) -> JSONResponse:
+@router.get('/')
+async def get_questions(
+    query_dto: QuestionsQueryRequest = Depends(parse_questions_query),
+    db: AsyncSession = Depends(get_mysql_session)
+) -> JSONResponse:
     """
-    Question 리스트를 가져오는 엔드포인트
+     Question 리스트를 가져오는 엔드포인트
 
-    Args:
-        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+     매개변수:
+     - query_dto (QuestionsQueryRequest): Question 리스트를 가져올 때의
+         옵션을 정의하는 데이터를 전달합니다.
+     - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
-    Returns:
-        JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
-    """
-
-    return await question_service.get_questions(db)
+     반환값:
+     - JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
+     """
+    return await question_service.get_questions(db, query_dto)
 
 
 @router.get('/{question_id}', response_model=QuestionResponse)

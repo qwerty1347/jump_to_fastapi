@@ -9,17 +9,24 @@ class QuestionRepository:
     def __init__(self):
         pass
 
-    async def get_questions(self, db: AsyncSession) -> List[Question]:
+    async def get_questions(self, db: AsyncSession, skip: int, limit: int) -> List[Question]:
         """
         Question 리스트를 가져오는 비동기 메서드
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - skip (int): 건너뛸 Question의 개수를 전달합니다. 기본값은 0입니다.
+        - limit (int): 가져올 Question의 개수를 전달합니다. 기본값은 10입니다.
 
         반환값:
         - List[Question]: Question 리스트가 포함된 성공 응답을 반환합니다.
         """
-        result = await db.execute(select(Question).order_by(Question.created_at.desc()))
+        result = await db.execute(
+            select(Question)
+            .order_by(Question.created_at.desc())
+            .offset(skip)
+            .limit(limit)
+        )
         questions = result.scalars().all()
 
         return questions

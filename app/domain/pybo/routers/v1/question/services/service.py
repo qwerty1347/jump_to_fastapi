@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest
+from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest, QuestionsQueryRequest
 from app.domain.pybo.routers.v1.question.dtos.response import QuestionItemResponse
 from app.domain.pybo.routers.v1.question.repositories.repository import QuestionRepository
 from common.response import error_response, success_response
@@ -16,18 +16,23 @@ class QuestionService():
         self.question_repository = QuestionRepository()
 
 
-    async def get_questions(self, db: AsyncSession) -> JSONResponse:
+    async def get_questions(self, db: AsyncSession, query_dto: QuestionsQueryRequest) -> JSONResponse:
         """
         Question 리스트를 가져오는 비동기 서비스
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - query_dto (QuestionsQueryRequest): Question 리스트를 가져올 때의
+            옵션을 정의하는 데이터를 전달합니다.
 
         반환값:
         - JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
         """
         try:
-            response = await self.question_repository.get_questions(db)
+            skip = (query_dto.page - 1) * query_dto.size
+            limit = query_dto.size
+
+            response = await self.question_repository.get_questions(db, skip, limit)
             response_model = [QuestionItemResponse.model_validate(item) for item in response]
 
             return success_response(jsonable_encoder(response_model))
