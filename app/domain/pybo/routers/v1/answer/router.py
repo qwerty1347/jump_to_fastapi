@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.answer.dependencies.dependency import parse_answer_create_form
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest
+from app.domain.pybo.routers.v1.answer.dependencies.dependency import parse_answer_create_form, parse_answer_update_form_payload, parse_answer_update_json_payload
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest, AnswerUpdateRequest
 from app.domain.pybo.routers.v1.answer.dtos.response import AnswerResponse
 from app.domain.pybo.routers.v1.answer.services.service import AnswerService
 from databases.mysql.session import get_mysql_session
@@ -82,3 +82,43 @@ async def create_answer(
         JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
     return await answer_service.create_answer(db, create_dto)
+
+
+@router.put('/form/{answer_id}')
+async def update_answer(
+    answer_id: int = Path(...),
+    update_dto: AnswerUpdateRequest = Depends(parse_answer_update_form_payload),
+    db: AsyncSession = Depends(get_mysql_session)
+) -> JSONResponse:
+    """
+    Answer 하나를 수정하는 엔드포인트 (폼 데이터)
+
+    Args:
+        answer_id (int): Answer 하나의 고유 ID를 전달합니다.
+        update_dto (AnswerUpdateRequest): Answer 수정을 위한 폼 데이터를 전달합니다.
+        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    Returns:
+        JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
+    """
+    return await answer_service.update_answer(db, answer_id, update_dto)
+
+
+@router.put('/json/{answer_id}')
+async def update_answer(
+    answer_id: int = Path(...),
+    update_dto: AnswerUpdateRequest = Depends(parse_answer_update_json_payload),
+    db: AsyncSession = Depends(get_mysql_session)
+) -> JSONResponse:
+    """
+    Answer를 수정하는 엔드포인트 (JSON 데이터)
+
+    Args:
+        answer_id (int): Answer 하나의 고유 ID를 전달합니다.
+        update_dto (AnswerUpdateRequest): Answer 수정을 위한 JSON 데이터를 전달합니다.
+        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    Returns:
+        JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
+    """
+    return await answer_service.update_answer(db, answer_id, update_dto)

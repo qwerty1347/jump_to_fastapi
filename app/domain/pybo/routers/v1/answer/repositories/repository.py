@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.models.answer import Answer
@@ -76,3 +76,19 @@ class AnswerRepository:
         await db.flush()
         await db.refresh(answer)
         return answer
+
+
+    async def update_answer(self, db: AsyncSession, answer_id: int, update_dto: dict) -> int:
+        """
+        answer 하나를 수정하는 비동기 메서드
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - answer_id (int): answer 하나의 고유 ID를 전달합니다.
+        - update_dto (dict): answer 수정을 위한 폼 데이터를 전달합니다.
+
+        반환값:
+        - int: 수정된 answer의 개수가 포함된 성공 응답을 반환합니다.
+        """
+        result = await db.execute(update(Answer).where(Answer.id == answer_id).values(**update_dto))
+        return result.rowcount

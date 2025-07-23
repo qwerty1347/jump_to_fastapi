@@ -2,10 +2,10 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest, AnswerUpdateRequest
 from app.domain.pybo.routers.v1.answer.dtos.response import AnswerItemResponse
 from app.domain.pybo.routers.v1.answer.repositories.repository import AnswerRepository
-from common.response import success_response
+from common.response import error_response, success_response
 
 
 class AnswerService:
@@ -82,4 +82,25 @@ class AnswerService:
                 return success_response(jsonable_encoder(response_model))
 
         except Exception as e:
-            raise e
+            error_response(message=str(e))
+
+
+    async def update_answer(self, db: AsyncSession, answer_id: int, update_dto: AnswerUpdateRequest) -> JSONResponse:
+        """
+        answer 하나를 수정하는 비동기 서비스 (폼 데이터)
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - answer_id (int): answer 하나의 고유 ID를 전달합니다.
+        - update_dto (AnswerUpdateRequest): answer 수정을 위한 폼 데이터를 전달합니다.
+
+        반환값:
+        - JSONResponse: 수정된 answer의 개수가 포함된 성공 응답을 반환합니다.
+        """
+        try:
+            async with db.begin():
+                response = await self.answer_repository.update_answer(db, answer_id, update_dto.model_dump())
+                return success_response(jsonable_encoder({"rowcount": response}))
+
+        except Exception as e:
+            error_response(message=str(e))
