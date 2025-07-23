@@ -104,3 +104,23 @@ class AnswerService:
 
         except Exception as e:
             error_response(message=str(e))
+
+
+    async def delete_answer(self, db: AsyncSession, answer_id: int) -> JSONResponse:
+        """
+        answer 하나를 삭제하는 비동기 서비스
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - answer_id (int): answer 하나의 고유 ID를 전달합니다.
+
+        반환값:
+        - JSONResponse: 삭제된 answer의 개수가 포함된 성공 응답을 반환합니다.
+        """
+        try:
+            async with db.begin():
+                response = await self.answer_repository.delete_answer(db, answer_id)
+                return success_response({"rowcount": response})
+
+        except Exception as e:
+            return error_response(message=str(e))
