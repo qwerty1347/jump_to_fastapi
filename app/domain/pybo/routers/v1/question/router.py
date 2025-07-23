@@ -50,38 +50,38 @@ async def get_question(
 
 @router.post('/form', response_model=QuestionResponse)
 async def create_question(
-    form_data: QuestionRequest = Depends(parse_question_create_form),
+    create_dto: QuestionRequest = Depends(parse_question_create_form),
     db: AsyncSession = Depends(get_mysql_session),
 ) -> JSONResponse:
     """
     Question을 생성하는 엔드포인트
 
     Args:
-        form_data (QuestionRequest): Question 생성을 위한 폼 데이터를 전달합니다.
+        create_dto (QuestionRequest): Question 생성을 위한 폼 데이터를 전달합니다.
         db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.create_question(db, form_data)
+    return await question_service.create_question(db, create_dto)
 
 
 @router.post('/json', response_model=QuestionResponse)
 async def create_question(
-    json_data: QuestionRequest,
+    create_dto: QuestionRequest,
     db: AsyncSession = Depends(get_mysql_session),
 ) -> JSONResponse:
     """
     Question을 생성하는 엔드포인트
 
     Args:
-        json_data (QuestionRequest): Question 생성을 위한 JSON 데이터를 전달합니다.
+        create_dto (QuestionRequest): Question 생성을 위한 JSON 데이터를 전달합니다.
         db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await question_service.create_question(db, json_data)
+    return await question_service.create_question(db, create_dto)
 
 
 @router.put('/form/{question_id}', response_model=QuestionResponse)

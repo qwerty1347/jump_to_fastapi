@@ -37,14 +37,14 @@ def parse_question_update_form_payload(
     return QuestionUpdateRequest.model_validate({"subject": subject, "content": content})
 
 
-def parse_question_update_json_payload(json_data: QuestionUpdateRequest = Body(...)) -> QuestionUpdateRequest:
+def parse_question_update_json_payload(update_dto: QuestionUpdateRequest = Body(...)) -> QuestionUpdateRequest:
     """
     Question을 수정하는 엔드포인트에서 사용하는 JSON 데이터를 반환하는 함수
 
     매개변수:
-    - json_data (QuestionUpdateRequest): Question 수정을 위한 JSON 데이터를 전달합니다.
+    - update_dto (QuestionUpdateRequest): Question 수정을 위한 JSON 데이터를 전달합니다.
 
     반환값:
     - QuestionUpdateRequest: Question 수정을 위한 JSON 데이터를 전달합니다.
     """
-    return json_data
+    return update_dto
