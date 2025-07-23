@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -75,7 +76,7 @@ class QuestionService():
                 response = await self.question_repository.create_question(db, create_dto.model_dump())
                 response_model = QuestionItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model))
+                return success_response(jsonable_encoder(response_model), code=HTTPStatus.CREATED)
 
         except Exception as e:
             return error_response(message=str(e))

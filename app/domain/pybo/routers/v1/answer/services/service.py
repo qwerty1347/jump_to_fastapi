@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -79,7 +80,7 @@ class AnswerService:
                 response = await self.answer_repository.create_answer(db, create_dto.model_dump())
                 response_model = AnswerItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model))
+                return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
 
         except Exception as e:
             error_response(message=str(e))
