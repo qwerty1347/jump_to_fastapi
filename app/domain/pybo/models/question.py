@@ -3,7 +3,7 @@ from databases.mysql.base import Base, TimestampMixin
 
 
 class Question(Base, TimestampMixin):
-    __tablename__ = "question"
+    __tablename__ = "questions"
 
     id = Column(Integer, primary_key=True)
     subject = Column(String(255), nullable=False)
