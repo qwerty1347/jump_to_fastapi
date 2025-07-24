@@ -27,17 +27,24 @@ class AnswerRepository:
         return answers
 
 
-    async def get_answers(self, db: AsyncSession) -> List[Answer]:
+    async def get_answers(self, db: AsyncSession, skip: int, limit: int) -> List[Answer]:
         """
-        answer 리스트를 가져오는 비동기 메서드
+        answer 목록을 가져오는 비동기 메서드
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - skip (int): 건너뛸 answer의 개수를 전달합니다.
+        - limit (int): 가져올 answer의 개수를 전달합니다.
 
         반환값:
-        - List[Answer]: answer 리스트가 포함된 성공 응답을 반환합니다.
+        - List[Answer]: answer 목록이 포함된 성공 응답을 반환합니다.
         """
-        result = await db.execute(select(Answer).order_by(Answer.created_at.desc()))
+        result = await db.execute(
+            select(Answer).
+            offset(skip).
+            limit(limit).
+            order_by(Answer.created_at.desc())
+        )
         answers = result.scalars().all()
 
         return answers

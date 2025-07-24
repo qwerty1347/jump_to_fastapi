@@ -12,3 +12,8 @@ class AnswerUpdateRequest(AnswerBase):
     model_config = {
         "extra": "forbid"
     }
+
+
+class AnswerQueryRequest:
+    page: int
+    size: int

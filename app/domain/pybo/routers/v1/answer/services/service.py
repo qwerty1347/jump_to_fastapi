@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest, AnswerUpdateRequest
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerRequest, AnswerUpdateRequest
 from app.domain.pybo.routers.v1.answer.dtos.response import AnswerItemResponse
 from app.domain.pybo.routers.v1.answer.repositories.repository import AnswerRepository
 from common.response import error_response, success_response
@@ -31,17 +31,22 @@ class AnswerService:
         return success_response(jsonable_encoder(response_model))
 
 
-    async def get_answers(self, db: AsyncSession) -> JSONResponse:
+    async def get_answers(self, db: AsyncSession, query_dto: AnswerQueryRequest) -> JSONResponse:
         """
-        answer 리스트를 가져오는 비동기 서비스
+        answer 목록을 가져오는 비동기 서비스
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - query_dto (AnswerQueryRequest): answer 목록을 가져올 때의
+            옵션을 정의하는 데이터를 전달합니다.
 
         반환값:
-        - JSONResponse: answer 리스트가 포함된 성공 응답을 반환합니다.
+        - JSONResponse: answer 목록이 포함된 성공 응답을 반환합니다.
         """
-        response = await self.answer_repository.get_answers(db)
+        skip = (query_dto.page - 1) * query_dto.size
+        limit = query_dto.size
+
+        response = await self.answer_repository.get_answers(db, skip, limit)
         response_model = [AnswerItemResponse.model_validate(item) for item in response]
 
         return success_response(jsonable_encoder(response_model))

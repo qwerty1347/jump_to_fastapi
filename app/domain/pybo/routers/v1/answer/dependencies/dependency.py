@@ -1,6 +1,6 @@
-from fastapi import Body, Form
+from fastapi import Body, Form, Query
 
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest, AnswerUpdateRequest
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerRequest, AnswerUpdateRequest
 
 
 def parse_answer_create_form(
@@ -46,3 +46,10 @@ def parse_answer_update_json_payload(update_dto: AnswerUpdateRequest = Body(...)
     - AnswerUpdateRequest: Answer 수정을 위한 JSON 데이터를 전달합니다.
     """
     return update_dto
+
+
+def parse_answer_query() -> AnswerQueryRequest:
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=30)
+
+    return AnswerQueryRequest(page=page, size=size)

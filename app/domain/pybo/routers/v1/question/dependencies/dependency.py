@@ -51,7 +51,7 @@ def parse_question_update_json_payload(update_dto: QuestionUpdateRequest = Body(
 
 
 def parse_questions_query(
-    page: int = Query(0),
+    page: int = Query(1, ge=1),
     size: int = Query(10, ge=1, le=30)
 ) -> QuestionQueryRequest:
     """

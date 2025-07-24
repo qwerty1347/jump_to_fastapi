@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.answer.dependencies.dependency import parse_answer_create_form, parse_answer_update_form_payload, parse_answer_update_json_payload
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerRequest, AnswerUpdateRequest
+from app.domain.pybo.routers.v1.answer.dependencies.dependency import parse_answer_create_form, parse_answer_query, parse_answer_update_form_payload, parse_answer_update_json_payload
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerRequest, AnswerUpdateRequest
 from app.domain.pybo.routers.v1.answer.dtos.response import AnswerResponse
 from app.domain.pybo.routers.v1.answer.services.service import AnswerService
 from databases.mysql.session import get_mysql_session
@@ -14,20 +14,23 @@ router = APIRouter(prefix="/answer", tags=["Answer"])
 answer_service = AnswerService()
 
 
-@router.get('/', response_model=AnswerResponse)
+@router.get('/')
 async def get_answers(
+    query_dto: AnswerQueryRequest = Depends(parse_answer_query),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
-    Answer 리스트를 가져오는 엔드포인트
+     Answer 리스트를 가져오는 엔드포인트
 
-    Args:
-        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+     매개변수:
+     - query_dto (AnswerQueryRequest): Answer 리스트를 가져올 때의
+         옵션을 정의하는 데이터를 전달합니다.
+     - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
-    Returns:
-        JSONResponse: Answer 리스트가 포함된 성공 응답을 반환합니다.
-    """
-    return await answer_service.get_answers(db)
+     반환값:
+     - JSONResponse: Answer 리스트가 포함된 성공 응답을 반환합니다.
+     """
+    return await answer_service.get_answers(db, query_dto)
 
 
 @router.get('/{answer_id}', response_model=AnswerResponse)
