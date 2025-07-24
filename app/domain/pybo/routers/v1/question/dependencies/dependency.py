@@ -1,6 +1,6 @@
 from fastapi import Body, Form, Query
 
-from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest, QuestionsQueryRequest
+from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest, QuestionQueryRequest
 
 
 def parse_question_create_form(
@@ -53,7 +53,7 @@ def parse_question_update_json_payload(update_dto: QuestionUpdateRequest = Body(
 def parse_questions_query(
     page: int = Query(0),
     size: int = Query(10, ge=1, le=30)
-) -> QuestionsQueryRequest:
+) -> QuestionQueryRequest:
     """
     Question 리스트를 쿼리하는 엔드포인트에서 사용하는 쿼리 파라미터를 반환하는 함수
 
@@ -62,6 +62,6 @@ def parse_questions_query(
     - size (int): 페이지 당 Question의 개수를 전달합니다. 기본값은 10이며, 최소값은 1, 최대값은 30입니다.
 
     반환값:
-    - QuestionsQueryRequest: Question 리스트를 쿼리하기 위한 데이터를 전달합니다.
+    - QuestionQueryRequest: Question 리스트를 쿼리하기 위한 데이터를 전달합니다.
     """
-    return QuestionsQueryRequest(page=page, size=size)
+    return QuestionQueryRequest(page=page, size=size)

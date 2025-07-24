@@ -18,7 +18,7 @@ class QuestionUpdateRequest(QuestionBase):
     }
 
 
-class QuestionsQueryRequest(QuestionBase):
-    page: int = 0
-    size: int = 10
+class QuestionQueryRequest(QuestionBase):
+    page: int
+    size: int
     keyword: str | None = None
