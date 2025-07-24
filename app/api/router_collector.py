@@ -1,15 +1,32 @@
-from fastapi.routing import APIRouter
+import importlib
+import pkgutil
 
-from app.api.v1 import api_v1_router
+from fastapi.routing import APIRouter
 
 
 def get_api_routers() -> list[APIRouter]:
     """
-    FastAPI 애플리케이션에 추가할 API Router 모음을 반환하는 함수
+    주어진 패키지에서 버전별 APIRouter를 수집하여 반환하는 함수
 
     반환값:
-    - list[APIRouter]: API Router 모음
+    - list[APIRouter]: 수집된 APIRouter 객체들의 리스트
     """
-    return [
-        api_v1_router,
-    ]
+    routers = []
+
+    package_name = "app.api"
+    package = importlib.import_module(package_name)
+
+    if not hasattr(package, "__path__"):
+        return routers
+
+    for finder, name, ispkg in pkgutil.iter_modules(package.__path__):
+        if ispkg and name.startswith("v"):
+            module_name = f"{package_name}.{name}"
+            module = importlib.import_module(module_name)
+            router_attr = f"api_{name}_router"
+
+            router = getattr(module, router_attr, None)
+            if router:
+                routers.append(router)
+
+    return routers

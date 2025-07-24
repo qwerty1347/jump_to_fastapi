@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from common.constants.route import RouteConstants
 from common.utils.router import auto_include_domain_routers
 
