@@ -1,12 +1,12 @@
 from fastapi import Body, Form, Query
 
-from app.domain.pybo.routers.v1.question.dtos.request import QuestionRequest, QuestionUpdateRequest, QuestionQueryRequest
+from app.domain.pybo.routers.v1.question.dtos.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
 
 
 def parse_question_create_form(
     subject = Form(...),
     content = Form(...)
-) -> QuestionRequest:
+) -> QuestionCreateRequest:
     """
     Question을 생성하는 엔드포인트에서 사용하는 폼 데이터를 반환하는 함수
 
@@ -15,9 +15,9 @@ def parse_question_create_form(
     - content (Form): Question 내용을 전달합니다.
 
     반환값:
-    - QuestionRequest: Question 생성을 위한 폼 데이터를 전달합니다.
+    - QuestionCreateRequest: Question 생성을 위한 폼 데이터를 전달합니다.
     """
-    return QuestionRequest.model_validate({"subject": subject, "content": content})
+    return QuestionCreateRequest.model_validate({"subject": subject, "content": content})
 
 
 def parse_question_update_form_payload(

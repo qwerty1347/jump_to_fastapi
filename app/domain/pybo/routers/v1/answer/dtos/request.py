@@ -1,7 +1,7 @@
 from app.domain.pybo.routers.v1.answer.dtos.base import AnswerBase
 
 
-class AnswerRequest(AnswerBase):
+class AnswerCreateRequest(AnswerBase):
     content: str
     question_id: int
 
@@ -14,6 +14,6 @@ class AnswerUpdateRequest(AnswerBase):
     }
 
 
-class AnswerQueryRequest:
+class AnswerQueryRequest(AnswerBase):
     page: int
     size: int

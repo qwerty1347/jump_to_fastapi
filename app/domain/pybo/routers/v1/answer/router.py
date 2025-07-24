@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.routers.v1.answer.dependencies.dependency import parse_answer_create_form, parse_answer_query, parse_answer_update_form_payload, parse_answer_update_json_payload
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerRequest, AnswerUpdateRequest
+from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.routers.v1.answer.dtos.response import AnswerResponse
 from app.domain.pybo.routers.v1.answer.services.service import AnswerService
 from databases.mysql.session import get_mysql_session
@@ -53,14 +53,14 @@ async def get_answer(
 
 @router.post('/form', response_model=AnswerResponse)
 async def create_answer(
-    create_dto: AnswerRequest = Depends(parse_answer_create_form),
+    create_dto: AnswerCreateRequest = Depends(parse_answer_create_form),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
     Answer를 생성하는 엔드포인트 (폼 데이터)
 
     Args:
-        create_dto (AnswerRequest): Answer 생성을 위한 폼 데이터를 전달합니다.
+        create_dto (AnswerCreateRequest): Answer 생성을 위한 폼 데이터를 전달합니다.
         db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
     Returns:
@@ -71,14 +71,14 @@ async def create_answer(
 
 @router.post('/json')
 async def create_answer(
-    create_dto: AnswerRequest,
+    create_dto: AnswerCreateRequest,
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
     Answer를 생성하는 엔드포인트 (JSON 데이터)
 
     Args:
-        create_dto (AnswerRequest): Answer 생성을 위한 JSON 데이터를 전달합니다.
+        create_dto (AnswerCreateRequest): Answer 생성을 위한 JSON 데이터를 전달합니다.
         db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
     Returns:
