@@ -1,6 +1,6 @@
 from fastapi import Body, Form, Query
 
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
+from app.domain.pybo.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 
 
 def parse_answer_create_form(

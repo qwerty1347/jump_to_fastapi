@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 from openai import BaseModel
 
-from app.domain.pybo.routers.v1.question.dtos.base import QuestionBase
+from app.domain.pybo.question.dtos.base import QuestionBase
 
 
 class QuestionItemResponse(QuestionBase):

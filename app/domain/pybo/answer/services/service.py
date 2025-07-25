@@ -3,9 +3,9 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.routers.v1.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
-from app.domain.pybo.routers.v1.answer.dtos.response import AnswerItemResponse
-from app.domain.pybo.routers.v1.answer.repositories.repository import AnswerRepository
+from app.domain.pybo.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
+from app.domain.pybo.answer.dtos.response import AnswerItemResponse
+from app.domain.pybo.answer.repositories.repository import AnswerRepository
 from common.response import error_response, success_response
 
 

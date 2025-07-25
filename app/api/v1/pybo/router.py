@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from app.domain.pybo.routers.v1.question.router import router as question_router
-from app.domain.pybo.routers.v1.answer.router import router as answer_router
-from app.domain.pybo.routers.v1.user.router import router as user_router
+from app.api.v1.pybo.question.router import router as question_router
+from app.api.v1.pybo.answer.router import router as answer_router
+from app.api.v1.pybo.user.router import router as user_router
 
 
 router = APIRouter(prefix="/pybo")

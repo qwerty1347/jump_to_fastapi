@@ -1,4 +1,4 @@
-from app.domain.pybo.routers.v1.answer.dtos.base import AnswerBase
+from app.domain.pybo.answer.dtos.base import AnswerBase
 
 
 class AnswerCreateRequest(AnswerBase):
