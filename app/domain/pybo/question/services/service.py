@@ -5,8 +5,8 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.question.dtos.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
-from app.domain.pybo.question.dtos.response import QuestionItemResponse
+from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
+from app.domain.pybo.question.schemas.response import QuestionItemResponse
 from app.domain.pybo.question.repositories.repository import QuestionRepository
 from common.response import error_response, success_response
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.domain.ocr.dependencies.dependency import parse_ocr_request
-from app.domain.ocr.dtos.request import OcrRequest
+from app.domain.ocr.schemas.request import OcrRequest
 from app.domain.ocr.services.service import OcrService
 from app.domain.ocr.validators.file import validate_upload_file
 from common.constants.route import RouteConstants

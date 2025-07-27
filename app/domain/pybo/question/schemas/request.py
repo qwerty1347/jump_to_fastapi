@@ -1,7 +1,4 @@
-from http import HTTPStatus
-from fastapi import HTTPException
-from pydantic import model_validator
-from app.domain.pybo.question.dtos.base import QuestionBase
+from app.domain.pybo.question.schemas.base import QuestionBase
 
 
 class QuestionCreateRequest(QuestionBase):

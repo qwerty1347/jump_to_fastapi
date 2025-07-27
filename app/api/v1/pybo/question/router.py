@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.question.dependencies.dependency import parse_question_create_form, parse_question_update_form_payload, parse_question_update_json_payload, parse_questions_query
-from app.domain.pybo.question.dtos.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
-from app.domain.pybo.question.dtos.response import QuestionResponse
+from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
+from app.domain.pybo.question.schemas.response import QuestionResponse
 from app.domain.pybo.question.services.service import QuestionService
 from databases.mysql.session import get_mysql_session
 

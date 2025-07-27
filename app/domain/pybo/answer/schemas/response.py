@@ -3,7 +3,7 @@ from typing import List
 
 from openai import BaseModel
 
-from app.domain.pybo.answer.dtos.base import AnswerBase
+from app.domain.pybo.answer.schemas.base import AnswerBase
 
 
 class AnswerItemResponse(AnswerBase):

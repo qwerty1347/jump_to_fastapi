@@ -2,7 +2,7 @@ from fastapi import UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from app.domain.ocr.dtos.response import OcrResponse
+from app.domain.ocr.schemas.response import OcrResponse
 from app.domain.ocr.modules.module import OcrModule
 from common.response import success_response, error_response
 

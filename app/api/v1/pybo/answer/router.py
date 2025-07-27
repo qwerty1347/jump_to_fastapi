@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.dependencies.dependency import parse_answer_create_form, parse_answer_query, parse_answer_update_form_payload, parse_answer_update_json_payload
-from app.domain.pybo.answer.dtos.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
-from app.domain.pybo.answer.dtos.response import AnswerResponse
+from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
+from app.domain.pybo.answer.schemas.response import AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
 from databases.mysql.session import get_mysql_session
 
