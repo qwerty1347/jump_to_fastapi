@@ -1,7 +1,7 @@
 from fastapi import Form
 
-from app.domain.ocr.dtos.enum import OcrEngine
-from app.domain.ocr.dtos.request import OcrRequest
+from app.domain.ocr.schemas.enum import OcrEngine
+from app.domain.ocr.schemas.request import OcrRequest
 
 
 def parse_ocr_request(engine: OcrEngine = Form(...)) -> OcrRequest:
