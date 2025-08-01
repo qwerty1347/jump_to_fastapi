@@ -45,3 +45,8 @@ beanie==1.29.0                # ODM based on Pydantic + Motor (MongoDB document 
 # HTTP Client
 # -----------------------------
 httpx                         # HTTP client with async/sync support (used for calling external APIs, testing, etc.)
+
+# -----------------------------
+# Security & Password Hashing
+# -----------------------------
+passlib                       # Password hashing utility (supports multiple schemes like md5_crypt, bcrypt, etc.)

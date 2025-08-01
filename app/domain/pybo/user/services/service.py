@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -5,6 +6,7 @@ from app.domain.pybo.user.repositories.repository import UserRepository
 from app.domain.pybo.user.schemas.request import UserCreateModel
 from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.response import error_response, success_response
+from common.utils.hash import hash_context
 
 
 class UserService():
@@ -25,11 +27,15 @@ class UserService():
         """
         try:
             async with db.begin():
-                create_dto = UserCreateModel(username=create_dto.username, password=create_dto.password1, email=create_dto.email)
+                create_dto = UserCreateModel(
+                    username=create_dto.username,
+                    password=hash_context(create_dto.password1),
+                    email=create_dto.email
+                )
                 response = await self.user_repository.create_user(db, UserCreateModel.model_dump(create_dto))
                 response_model = UserItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model))
+                return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
 
         except Exception as e:
             return error_response(message=str(e))
