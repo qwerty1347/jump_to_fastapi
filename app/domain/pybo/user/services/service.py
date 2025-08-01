@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -30,7 +31,7 @@ class UserService():
                 is_user_exists = await self.user_repository.is_user_exists(db, create_dto.username, create_dto.email)
 
                 if is_user_exists:
-                    return error_response(code=HTTPStatus.CONFLICT, message="User already exists")
+                    raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="User already exists")
 
                 create_dto = UserCreateModel(
                     username=create_dto.username,
@@ -41,6 +42,9 @@ class UserService():
                 response_model = UserItemResponse.model_validate(response)
 
                 return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
+
+        except HTTPException as e:
+            raise e
 
         except Exception as e:
             return error_response(message=str(e))
