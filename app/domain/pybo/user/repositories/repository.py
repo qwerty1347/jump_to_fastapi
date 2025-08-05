@@ -1,7 +1,7 @@
 from sqlalchemy import exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.models.user import User
+from app.domain.pybo.user.models.user import User
 
 
 class UserRepository():

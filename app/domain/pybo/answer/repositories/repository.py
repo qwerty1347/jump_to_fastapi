@@ -2,7 +2,7 @@ from typing import List
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.models.answer import Answer
+from app.domain.pybo.answer.models.answer import Answer
 
 
 class AnswerRepository:
