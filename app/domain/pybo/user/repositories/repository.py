@@ -1,7 +1,8 @@
-from sqlalchemy import exists, select
+from sqlalchemy import and_, exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.user.models.user import User
+from app.domain.pybo.user.schemas.request import UserQueryRequest
 
 
 class UserRepository():
@@ -44,3 +45,21 @@ class UserRepository():
         result = await db.execute(stmt)
 
         return result.scalar()
+
+
+    async def get_user(self, db, query_dto: dict) -> User:
+        """
+        User 하나를 가져오는 비동기 메서드
+
+        매개변수:
+        - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+        - query_dto (dict): User 가져올 때 사용할 조건을 전달합니다.
+
+        반환값:
+        - User: User 하나가 포함된 성공 응답을 반환합니다.
+        """
+        conditions = [getattr(User, k) == v for k, v in query_dto.items()]
+        stmt = select(User).where(and_(*conditions))
+        result = await db.execute(stmt)
+
+        return result.scalars().first()

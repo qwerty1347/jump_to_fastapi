@@ -1,6 +1,6 @@
-from fastapi import Form
+from fastapi import Form, Query
 
-from app.domain.pybo.user.schemas.request import UserCreateRequest
+from app.domain.pybo.user.schemas.request import UserCreateRequest, UserQueryRequest
 
 
 def parse_user_create_form_payload(
@@ -22,3 +22,18 @@ def parse_user_create_form_payload(
     - UserCreateRequest: User 생성을 위한 폼 데이터를 전달합니다.
     """
     return UserCreateRequest.model_validate({"username": username, "password1": password1, "password2": password2, "email": email})
+
+
+def parse_user_query(
+    username: str = Query(...)
+) -> UserQueryRequest:
+    """
+     User 정보를 반환하는 엔드포인트에서 사용하는 쿼리스트링을 반환하는 함수
+
+     매개변수:
+     - username (Query): User의 username을 전달합니다.
+
+     반환값:
+     - UserQueryRequest: User 정보를 반환하는 엔드포인트에서 사용하는 쿼리스트링을 전달합니다.
+     """
+    return UserQueryRequest(username=username)

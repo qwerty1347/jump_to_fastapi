@@ -32,3 +32,7 @@ class UserCreateModel(UserBase):
     username: str
     password: str
     email: str
+
+
+class UserQueryRequest(UserBase):
+    username: str
