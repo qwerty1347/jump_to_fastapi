@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -63,10 +64,22 @@ class AnswerService:
         반환값:
         - JSONResponse: answer 하나가 포함된 성공 응답을 반환합니다.
         """
-        response = await self.answer_repository.get_answer(db, answer_id)
-        response_model  = AnswerItemResponse.model_validate(response)
+        try:
+            async with db.begin():
+                response = await self.answer_repository.get_answer(db, answer_id)
 
-        return success_response(jsonable_encoder(response_model))
+                if response is None:
+                    raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Answer not found")
+
+                response_model  = AnswerItemResponse.model_validate(response)
+
+                return success_response(jsonable_encoder(response_model))
+
+        except HTTPException as e:
+            raise e
+
+        except Exception as e:
+            raise e
 
 
     async def create_answer(self, db: AsyncSession, create_dto: AnswerCreateRequest) -> JSONResponse:

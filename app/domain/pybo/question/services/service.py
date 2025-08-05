@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -57,9 +58,16 @@ class QuestionService():
         """
         try:
             response = await self.question_repository.get_question(db, question_id)
+
+            if response is None:
+                raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Question not found"
+                                    )
             response_model = QuestionItemResponse.model_validate(response)
 
             return success_response(jsonable_encoder(response_model))
+
+        except HTTPException as e:
+            raise e
 
         except Exception as e:
             return error_response(message=str(e))
