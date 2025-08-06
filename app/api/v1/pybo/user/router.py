@@ -49,7 +49,7 @@ async def create_user(
     return await user_service.create_user(db, create_dto)
 
 
-@router.get('/')
+@router.get('/', response_model=UserResponse)
 async def get_user(
     query_dto: UserQueryRequest = Depends(parse_user_query),
     db: AsyncSession = Depends(get_mysql_session)
