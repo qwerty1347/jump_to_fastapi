@@ -50,7 +50,7 @@ class AnswerRepository:
         return answers
 
 
-    async def get_answer(self, db: AsyncSession, answer_id: int) -> Answer:
+    async def find_answer(self, db: AsyncSession, answer_id: int) -> Answer:
         """
         answer 하나를 가져오는 비동기 메서드
 

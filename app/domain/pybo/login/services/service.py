@@ -53,13 +53,13 @@ class LoginService():
         반환값:
         - UserLoginResponse: User 인증이 성공하면 UserLoginResponse 하나가 포함된 성공 응답을 반환합니다.
         """
-        response_model: UserLoginResponse = await self.get_user(db, login_dto.username)
+        response_model: UserLoginResponse = await self.find_user(db, login_dto.username)
         
         if not verify_context(login_dto.password, response_model.password):
             raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid password")
         
     
-    async def get_user(self, db: AsyncSession, username: str) -> UserLoginResponse:
+    async def find_user(self, db: AsyncSession, username: str) -> UserLoginResponse:
         """
         User를 username으로 가져오는 비동기 메서드
 
@@ -71,7 +71,7 @@ class LoginService():
         - UserLoginResponse: User 하나가 포함된 성공 응답을 반환합니다.
         """
         async with db.begin():
-            response = await self.user_repository.get_user(db, {"username": username})
+            response = await self.user_repository.find_user(db, {"username": username})
             
         if response is None:
             raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")

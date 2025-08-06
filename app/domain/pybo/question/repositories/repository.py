@@ -32,7 +32,7 @@ class QuestionRepository:
         return questions
 
 
-    async def get_question(self, db:AsyncSession, question_id: int) -> Question | None:
+    async def find_question(self, db:AsyncSession, question_id: int) -> Question | None:
         """
         Question 하나를 가져오는 비동기 메서드
 

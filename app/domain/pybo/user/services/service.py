@@ -51,7 +51,7 @@ class UserService():
             return error_response(message=str(e))
 
 
-    async def get_user(self, db: AsyncSession, query_dto: UserQueryRequest) -> JSONResponse:
+    async def find_user(self, db: AsyncSession, query_dto: UserQueryRequest) -> JSONResponse:
         """
         User 하나를 가져오는 비동기 서비스
 
@@ -64,7 +64,7 @@ class UserService():
         """
         try:
             async with db.begin():
-                response = await self.user_repository.get_user(db, query_dto.model_dump(exclude_unset=True))
+                response = await self.user_repository.find_user(db, query_dto.model_dump(exclude_unset=True))
 
                 if response is None:
                     raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")

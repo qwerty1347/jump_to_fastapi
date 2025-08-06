@@ -50,7 +50,7 @@ async def create_user(
 
 
 @router.get('/', response_model=UserResponse)
-async def get_user(
+async def find_user(
     query_dto: UserQueryRequest = Depends(parse_user_query),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
@@ -65,4 +65,4 @@ async def get_user(
      Returns:
          JSONResponse: 가져온 User 하나가 포함된 성공 응답을 반환합니다.
      """
-    return await user_service.get_user(db, query_dto)
+    return await user_service.find_user(db, query_dto)

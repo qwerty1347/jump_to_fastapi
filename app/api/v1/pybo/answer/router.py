@@ -34,7 +34,7 @@ async def get_answers(
 
 
 @router.get('/{answer_id}', response_model=AnswerResponse)
-async def get_answer(
+async def find_answer(
     answer_id: int = Path(...),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
@@ -48,7 +48,7 @@ async def get_answer(
     Returns:
         JSONResponse: Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.get_answer(db, answer_id)
+    return await answer_service.find_answer(db, answer_id)
 
 
 @router.post('/form', response_model=AnswerResponse)

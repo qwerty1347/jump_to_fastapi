@@ -45,7 +45,7 @@ class QuestionService():
             return error_response(message=str(e))
 
 
-    async def get_question(self, db: AsyncSession, question_id: int) -> JSONResponse:
+    async def find_question(self, db: AsyncSession, question_id: int) -> JSONResponse:
         """
         Question 하나를 가져오는 비동기 서비스
 
@@ -57,7 +57,7 @@ class QuestionService():
         - JSONResponse: Question 하나가 포함된 성공 응답을 반환합니다.
         """
         try:
-            response = await self.question_repository.get_question(db, question_id)
+            response = await self.question_repository.find_question(db, question_id)
 
             if response is None:
                 raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Question not found"

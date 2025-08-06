@@ -47,7 +47,7 @@ class UserRepository():
         return result.scalar()
 
 
-    async def get_user(self, db, query_dto: dict) -> User:
+    async def find_user(self, db, query_dto: dict) -> User:
         """
         User 하나를 가져오는 비동기 메서드
 
