@@ -50,3 +50,8 @@ httpx                         # HTTP client with async/sync support (used for ca
 # Security & Password Hashing
 # -----------------------------
 passlib                       # Password hashing utility (supports multiple schemes like md5_crypt, bcrypt, etc.)
+
+# -----------------------------
+# JWT Token Handling
+# -----------------------------
+python-jose[cryptography]     # JWT creation and verification using cryptographic algorithms
