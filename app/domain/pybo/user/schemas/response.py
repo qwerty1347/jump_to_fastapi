@@ -13,6 +13,10 @@ class UserItemResponse(UserBase):
     updated_at: datetime | None = None
 
 
+class UserLoginResponse(UserBase):
+    password: str
+
+
 class UserResponse(BaseModel):
     result: bool
     code: int
