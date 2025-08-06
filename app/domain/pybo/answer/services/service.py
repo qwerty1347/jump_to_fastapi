@@ -68,12 +68,12 @@ class AnswerService:
             async with db.begin():
                 response = await self.answer_repository.find_answer(db, answer_id)
 
-                if response is None:
-                    raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Answer not found")
+            if response is None:
+                raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Answer not found")
 
-                response_model  = AnswerItemResponse.model_validate(response)
+            response_model  = AnswerItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model))
+            return success_response(jsonable_encoder(response_model))
 
         except HTTPException as e:
             raise e
@@ -96,9 +96,10 @@ class AnswerService:
         try:
             async with db.begin():
                 response = await self.answer_repository.create_answer(db, create_dto.model_dump())
-                response_model = AnswerItemResponse.model_validate(response)
+                
+            response_model = AnswerItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
+            return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
 
         except Exception as e:
             error_response(message=str(e))
@@ -119,7 +120,8 @@ class AnswerService:
         try:
             async with db.begin():
                 response = await self.answer_repository.update_answer(db, answer_id, update_dto.model_dump())
-                return success_response(jsonable_encoder({"rowcount": response}))
+                
+            return success_response(jsonable_encoder({"rowcount": response}))
 
         except Exception as e:
             error_response(message=str(e))
@@ -139,7 +141,8 @@ class AnswerService:
         try:
             async with db.begin():
                 response = await self.answer_repository.delete_answer(db, answer_id)
-                return success_response({"rowcount": response})
+                
+            return success_response({"rowcount": response})
 
         except Exception as e:
             return error_response(message=str(e))

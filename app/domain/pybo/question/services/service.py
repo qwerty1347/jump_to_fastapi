@@ -87,9 +87,10 @@ class QuestionService():
         try:
             async with db.begin():
                 response = await self.question_repository.create_question(db, create_dto.model_dump())
-                response_model = QuestionItemResponse.model_validate(response)
+                
+            response_model = QuestionItemResponse.model_validate(response)
 
-                return success_response(jsonable_encoder(response_model), code=HTTPStatus.CREATED)
+            return success_response(jsonable_encoder(response_model), code=HTTPStatus.CREATED)
 
         except Exception as e:
             return error_response(message=str(e))
@@ -110,7 +111,8 @@ class QuestionService():
         try:
             async with db.begin():
                 response = await self.question_repository.update_question_by_question_id(db, question_id, update_dto.model_dump(exclude_unset=True))
-                return success_response({"rowcount": response})
+
+            return success_response({"rowcount": response})
 
         except Exception as e:
             return error_response(message=str(e))
@@ -130,7 +132,8 @@ class QuestionService():
         try:
             async with db.begin():
                 response = await self.question_repository.delete_question_by_question_id(db, question_id)
-                return success_response({"rowcount": response})
+                
+            return success_response({"rowcount": response})
 
         except Exception as e:
             error_response(message=str(e))
