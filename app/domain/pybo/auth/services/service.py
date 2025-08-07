@@ -25,5 +25,7 @@ class AuthService():
         }
         
         return {
-            "access_token": jwt.encode(data, settings.PYBO_JWT_SECRET_KEY, algorithm=settings.PYBO_JWT_ALGORITHM)
+            "access_token": jwt.encode(data, settings.PYBO_JWT_SECRET_KEY, algorithm=settings.PYBO_JWT_ALGORITHM),
+            "token_type": "bearer",
+            "username": username
         }
