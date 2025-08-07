@@ -7,10 +7,11 @@ from app.domain.pybo.question.dependencies.dependency import parse_question_crea
 from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
 from app.domain.pybo.question.schemas.response import QuestionResponse
 from app.domain.pybo.question.services.service import QuestionService
+from common.constants.route import RouteConstants
 from databases.mysql.session import get_mysql_session
 
 
-router = APIRouter(prefix="/question", tags=["Question"])
+router = APIRouter(prefix=RouteConstants.QUESTION_PREFIX, tags=[RouteConstants.QUESTION_TAG])
 question_service = QuestionService()
 answer_service = AnswerService()
 

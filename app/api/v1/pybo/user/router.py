@@ -6,10 +6,11 @@ from app.domain.pybo.user.dependencies.dependency import parse_user_create_form_
 from app.domain.pybo.user.schemas.request import UserCreateRequest, UserQueryRequest
 from app.domain.pybo.user.schemas.response import UserResponse
 from app.domain.pybo.user.services.service import UserService
+from common.constants.route import RouteConstants
 from databases.mysql.session import get_mysql_session
 
 
-router = APIRouter(prefix="/user", tags=["User"])
+router = APIRouter(prefix=RouteConstants.USER_PREFIX, tags=[RouteConstants.USER_TAG])
 user_service = UserService()
 
 

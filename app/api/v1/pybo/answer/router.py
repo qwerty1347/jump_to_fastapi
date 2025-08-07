@@ -7,10 +7,11 @@ from app.domain.pybo.answer.dependencies.dependency import parse_answer_create_f
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.answer.schemas.response import AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
+from common.constants.route import RouteConstants
 from databases.mysql.session import get_mysql_session
 
 
-router = APIRouter(prefix="/answer", tags=["Answer"])
+router = APIRouter(prefix=RouteConstants.ANSWER_PREFIX, tags=[RouteConstants.ANSWER_TAG])
 answer_service = AnswerService()
 
 

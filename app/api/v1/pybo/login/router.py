@@ -6,10 +6,11 @@ from app.domain.pybo.login.dependencies.dependency import parse_login_form
 from app.domain.pybo.login.schemas.request import LoginRequest
 from app.domain.pybo.login.schemas.response import LoginTokenResponse
 from app.domain.pybo.login.services.service import LoginService
+from common.constants.route import RouteConstants
 from databases.mysql.session import get_mysql_session
 
 
-router = APIRouter(prefix="/user/login")
+router = APIRouter(prefix=RouteConstants.LOGIN_PREFIX, tags=[RouteConstants.LOGIN_TAG])
 login_service = LoginService()
 
 
