@@ -4,7 +4,6 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.pybo.auth.schemas.response import TokenResponse
 from app.domain.pybo.auth.services.service import AuthService
 from app.domain.pybo.login.schemas.request import LoginRequest
 from app.domain.pybo.user.repositories.repository import UserRepository
@@ -28,7 +27,7 @@ class LoginService():
         - login_dto (LoginRequest): User를 확인할 때의 옵션을 정의하는 데이터를 전달합니다.
         
         반환값:
-        - TokenResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
+        - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
         """
         try:
             await self.is_authenticated_user(db, login_dto)

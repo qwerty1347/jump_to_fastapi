@@ -26,7 +26,7 @@ async def index(
      - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
      반환값:
-     - LoginTokenResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
+     - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
      """
     return await login_service.login_for_access_token(db, login_dto)
 
@@ -44,6 +44,6 @@ async def index(
      - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
      반환값:
-     - LoginTokenResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
+     - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
      """
     return await login_service.login_for_access_token(db, login_dto)
