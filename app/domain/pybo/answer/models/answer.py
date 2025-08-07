@@ -10,3 +10,5 @@ class Answer(Base, TimestampMixin):
     content = Column(Text, nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"))
     question = relationship("Question", backref="answers")
+    user_id = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User", backref="answer_users")
