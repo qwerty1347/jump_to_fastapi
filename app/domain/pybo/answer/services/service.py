@@ -41,8 +41,8 @@ class AnswerService:
         """
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size
-
         response = await self.answer_repository.get_answers(db, skip, limit)
+        
         return [AnswerItemResponse.model_validate(item) for item in response]
 
 

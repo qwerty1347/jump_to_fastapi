@@ -1,7 +1,8 @@
+import json
+
 from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
-import json
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from jose import jwt
 
 from app.domain.pybo.user.schemas.response import UserItemResponse
@@ -9,7 +10,6 @@ from databases.mysql.session import async_session
 from app.domain.pybo.user.schemas.request import UserQueryRequest
 from app.domain.pybo.user.services.service import UserService
 from config.settings import settings
-from databases.mysql.session import get_mysql_session 
 
 
 class AuthService():
@@ -68,10 +68,10 @@ class AuthService():
         async with async_session() as db:
             response = await self.user_service.find_user(db=db, query_dto=UserQueryRequest(username=username))
             
-            json_str = response.body.decode('utf-8')
-            data = json.loads(json_str)
+        json_str = response.body.decode('utf-8')
+        data = json.loads(json_str)
 
-            if not data['result']:
-                raise HTTPException(status_code=HTTPStatus.INTERVAL_SERVER_ERROR, detail="server error")
-            
-            return UserItemResponse.model_validate(data['data'])
+        if not data['result']:
+            raise HTTPException(status_code=HTTPStatus.INTERVAL_SERVER_ERROR, detail="server error")
+        
+        return UserItemResponse.model_validate(data['data'])

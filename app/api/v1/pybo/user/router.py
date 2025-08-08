@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from http import HTTPStatus
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -7,6 +9,7 @@ from app.domain.pybo.user.schemas.request import UserCreateRequest, UserQueryReq
 from app.domain.pybo.user.schemas.response import UserResponse
 from app.domain.pybo.user.services.service import UserService
 from common.constants.route import RouteConstants
+from common.response import success_response
 from databases.mysql.session import get_mysql_session
 
 
@@ -29,7 +32,15 @@ async def create_user(
     Returns:
         JSONResponse: 생성된 User 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await user_service.create_user(db, create_dto)
+    try:
+        response = await user_service.create_user(db, create_dto)
+        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
+
+    except HTTPException as e:
+        raise e
+        
+    except Exception as e:
+        raise e
 
 
 @router.post('/json', response_model=UserResponse)
@@ -47,7 +58,15 @@ async def create_user(
     Returns:
         JSONResponse: 생성된 User 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await user_service.create_user(db, create_dto)
+    try:
+        response = await user_service.create_user(db, create_dto)
+        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
+        
+    except HTTPException as e:        
+        raise e
+        
+    except Exception as e:
+        raise e
 
 
 @router.get('/', response_model=UserResponse)

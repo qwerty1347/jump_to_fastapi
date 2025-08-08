@@ -26,8 +26,8 @@ class QuestionService():
         """
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size
-
         response = await self.question_repository.get_questions(db, skip, limit)
+        
         return [QuestionItemResponse.model_validate(item) for item in response]
 
 
