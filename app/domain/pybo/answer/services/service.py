@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.answer.schemas.response import AnswerItemResponse
 from app.domain.pybo.answer.repositories.repository import AnswerRepository
+from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.response import error_response, success_response
 
 
@@ -82,9 +83,9 @@ class AnswerService:
             raise e
 
 
-    async def create_answer(self, db: AsyncSession, create_dto: AnswerCreateRequest) -> JSONResponse:
+    async def create_answer(self, db: AsyncSession, create_dto: AnswerCreateRequest) -> JSONResponse: 
         """
-        answer 하나를 생성하는 비동기 서비스
+        answer 하나를 생성하는 비동기 서비스 (폼 데이터)
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
@@ -102,7 +103,7 @@ class AnswerService:
             return success_response(jsonable_encoder(response_model), HTTPStatus.CREATED)
 
         except Exception as e:
-            error_response(message=str(e))
+            return error_response(message=str(e))
 
 
     async def update_answer(self, db: AsyncSession, answer_id: int, update_dto: AnswerUpdateRequest) -> JSONResponse:

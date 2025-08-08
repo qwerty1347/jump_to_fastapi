@@ -7,6 +7,7 @@ from app.domain.pybo.answer.dependencies.dependency import parse_answer_create_f
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.answer.schemas.response import AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
+from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from common.constants.route import RouteConstants
 from databases.mysql.session import get_mysql_session
 
@@ -52,20 +53,22 @@ async def find_answer(
     return await answer_service.find_answer(db, answer_id)
 
 
-@router.post('/form', response_model=AnswerResponse)
+@router.post('/form')
 async def create_answer(
     create_dto: AnswerCreateRequest = Depends(parse_answer_create_form),
+    user = Depends(get_current_user),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
-    Answer를 생성하는 엔드포인트 (폼 데이터)
+    Answer 하나를 생성하는 엔드포인트 (폼 데이터)
 
-    Args:
-        create_dto (AnswerCreateRequest): Answer 생성을 위한 폼 데이터를 전달합니다.
-        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+    매개변수:
+    - create_dto (AnswerCreateRequest): Answer 생성을 위한 폼 데이터를 전달합니다.
+    - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
-    Returns:
-        JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
+    반환값:
+    - JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
     return await answer_service.create_answer(db, create_dto)
 
