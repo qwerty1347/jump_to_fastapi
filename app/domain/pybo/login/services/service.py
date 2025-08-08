@@ -18,27 +18,18 @@ class LoginService():
         self.user_repository = UserRepository()
     
         
-    async def login_for_access_token(self, db: AsyncSession, login_dto: LoginRequest) -> JSONResponse:
+    async def login_for_access_token(self, db: AsyncSession, login_dto: LoginRequest) -> dict[str, str]:
         """
-        username과 password로 access_token을 발급하는 비동기 서비스
+        username과 password로 access_token을 생성하는 비동기 메서드
         
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
-        - login_dto (LoginRequest): User를 확인할 때의 옵션을 정의하는 데이터를 전달합니다.
+        - login_dto (dict): User 인증을 위한 폼 데이터를 전달합니다.
         
         반환값:
-        - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
+        - dict[str, str]: 생성된 access_token이 포함된 성공 응답을 반환합니다.
         """
-        try:
-            await self.is_authenticated_user(db, login_dto)
-            access_token = self.auth_service.create_access_token(login_dto.username)
-            return success_response(jsonable_encoder(access_token))
-
-        except HTTPException as e:
-            raise e
-        
-        except Exception as e:
-            return error_response(message=str(e))
+        return self.auth_service.create_access_token(login_dto.username)
             
     
     async def is_authenticated_user(self, db: AsyncSession, login_dto: LoginRequest):
