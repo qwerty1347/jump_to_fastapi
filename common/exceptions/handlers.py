@@ -4,7 +4,18 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from http import HTTPStatus
 
+from common.constants.http_code import HttpCodeConstants
 from common.response import error_response
+
+
+async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """
+    FastAPI 애플리케이션에 예외가 발생하면 이 함수를 호출하여 JSONResponse를 반환
+
+    예외가 발생하면
+    JSONResponse를 반환하여 클라이언트에게 에러 메시지를 전송
+    """
+    return error_response(HttpCodeConstants.UNKNOWN_ERROR, str(exc))
 
 
 async def validate_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
@@ -35,5 +46,6 @@ def register_exception_handlers(app):
 
     RequestValidationError, StarletteHTTPException 예외 처리 핸들러를 등록
     """
+    app.add_exception_handler(Exception, global_exception_handler)
     app.add_exception_handler(RequestValidationError, validate_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
