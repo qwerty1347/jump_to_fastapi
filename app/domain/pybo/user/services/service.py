@@ -27,16 +27,16 @@ class UserService():
         async with db.begin():
             is_user_exists = await self.user_repository.is_user_exists(db, create_dto.username, create_dto.email)
 
-        if is_user_exists:
-            raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="User already exists")
+            if is_user_exists:
+                raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="User already exists")
 
-        create_dto = UserCreateModel(
-            username=create_dto.username,
-            password=hash_context(create_dto.password1),
-            email=create_dto.email
-        )
-        response = await self.user_repository.create_user(db, UserCreateModel.model_dump(create_dto))
-        
+            create_dto = UserCreateModel(
+                username=create_dto.username,
+                password=hash_context(create_dto.password1),
+                email=create_dto.email
+            )
+            response = await self.user_repository.create_user(db, UserCreateModel.model_dump(create_dto))
+
         return UserItemResponse.model_validate(response)
 
 
@@ -53,7 +53,7 @@ class UserService():
         """
         async with db.begin():
             response = await self.user_repository.find_user(db, query_dto.model_dump(exclude_unset=True))
-            
+
         if response is None:
             raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")
 
