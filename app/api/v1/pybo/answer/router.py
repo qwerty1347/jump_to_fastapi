@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, Path
+from http import HTTPStatus
+from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,6 +11,7 @@ from app.domain.pybo.answer.schemas.response import AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from common.constants.route import RouteConstants
+from common.response import success_response
 from databases.mysql.session import get_mysql_session
 
 
@@ -22,17 +25,22 @@ async def get_answers(
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
-     Answer 리스트를 가져오는 엔드포인트
+    Answer 리스트를 가져오는 엔드포인트
 
-     매개변수:
-     - query_dto (AnswerQueryRequest): Answer 리스트를 가져올 때의
-         옵션을 정의하는 데이터를 전달합니다.
-     - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+    매개변수:
+    - query_dto (AnswerQueryRequest): Answer 리스트를 가져올 때의
+        옵션을 정의하는 데이터를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
-     반환값:
-     - JSONResponse: Answer 리스트가 포함된 성공 응답을 반환합니다.
-     """
-    return await answer_service.get_answers(db, query_dto)
+    반환값:
+    - JSONResponse: Answer 리스트가 포함된 성공 응답을 반환합니다.
+    """
+    try:
+        response = await answer_service.get_answers(db, query_dto)
+        return success_response(jsonable_encoder(response))
+
+    except Exception as e:
+        raise e
 
 
 @router.get('/{answer_id}', response_model=AnswerResponse)
@@ -50,7 +58,15 @@ async def find_answer(
     Returns:
         JSONResponse: Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.find_answer(db, answer_id)
+    try:
+        response = await answer_service.find_answer(db, answer_id)
+        return success_response(jsonable_encoder(response))
+    
+    except HTTPException as e:
+        raise e
+
+    except Exception as e:
+        raise e
 
 
 @router.post('/form')
@@ -70,7 +86,12 @@ async def create_answer(
     반환값:
     - JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.create_answer(db, create_dto)
+    try:
+        response = await answer_service.create_answer(db, create_dto)
+        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
+
+    except Exception as e:
+        raise e
 
 
 @router.post('/json')
@@ -88,7 +109,12 @@ async def create_answer(
     Returns:
         JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.create_answer(db, create_dto)
+    try:
+        response = await answer_service.create_answer(db, create_dto)
+        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
+        
+    except Exception as e:
+        raise e
 
 
 @router.put('/form/{answer_id}')
@@ -108,7 +134,12 @@ async def update_answer(
     Returns:
         JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.update_answer(db, answer_id, update_dto)
+    try:
+        response = await answer_service.update_answer(db, answer_id, update_dto)
+        return success_response(jsonable_encoder(response))
+    
+    except Exception as e:
+        raise e
 
 
 @router.put('/json/{answer_id}')
@@ -128,7 +159,12 @@ async def update_answer(
     Returns:
         JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.update_answer(db, answer_id, update_dto)
+    try:
+        response = await answer_service.update_answer(db, answer_id, update_dto)
+        return success_response(jsonable_encoder(response))
+
+    except Exception as e:
+        raise e
 
 
 @router.delete('/{answer_id}')
@@ -146,4 +182,9 @@ async def delete_answer(
     Returns:
         JSONResponse: 삭제된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    return await answer_service.delete_answer(db, answer_id)
+    try:
+        response = await answer_service.delete_answer(db, answer_id)
+        return success_response(jsonable_encoder(response))
+        
+    except Exception as e:
+        raise e

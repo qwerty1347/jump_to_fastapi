@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Path
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,6 +9,7 @@ from app.domain.pybo.question.schemas.request import QuestionCreateRequest, Ques
 from app.domain.pybo.question.schemas.response import QuestionResponse
 from app.domain.pybo.question.services.service import QuestionService
 from common.constants.route import RouteConstants
+from common.response import success_response
 from databases.mysql.session import get_mysql_session
 
 
@@ -151,5 +153,20 @@ async def delete_question_by_question_id(
 async def get_answers_by_question_id(
     question_id: int = Path(...),
     db: AsyncSession = Depends(get_mysql_session)
-):
-    return await answer_service.get_answers_by_question_id(db, question_id)
+) -> JSONResponse:
+    """
+    특정 질문 ID에 해당하는 answer 목록을 가져오는 엔드포인트
+
+    매개변수:
+    - question_id (int): 특정 질문의 고유 ID를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    반환값:
+    - JSONResponse: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
+    """
+    try:
+        response = await answer_service.get_answers_by_question_id(db, question_id)
+        return success_response(jsonable_encoder(response))
+        
+    except Exception as e:
+        raise e
