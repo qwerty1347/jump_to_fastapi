@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:5.7
-    container_name: fastapi-mysql
+    container_name: jump_to_fastapi-mysql
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./.docker/mysql/data:/var/lib/mysql
@@ -18,7 +18,7 @@ services:
 
   mongo:
     image: mongo:latest
-    container_name: fastapi-mongo
+    container_name: jump_to_fastapi-mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
@@ -33,11 +33,11 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile
-    container_name: fastapi
+    container_name: jump_to_fastapi
     volumes:
       - ./:/app
     ports:
-      - "9093:9093"
+      - "9094:9094"
     networks:
       - local_network
 

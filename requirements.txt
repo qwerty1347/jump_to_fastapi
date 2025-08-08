@@ -22,13 +22,6 @@ pydantic_settings==2.10.1     # Dedicated package for BaseSettings configuration
 python-multipart==0.0.20      # Parses multipart/form-data requests in FastAPI
 
 # -----------------------------
-# OCR (Optical Character Recognition)
-# -----------------------------
-easyocr==1.7.2                # OCR (PyTorch-based, simple and fast text recognition)
-paddleocr                     # OCR (PaddlePaddle-based, supports multiple languages and high performance)
-paddlepaddle                  # PaddlePaddle CPU version (CPU-only deep learning framework)
-
-# -----------------------------
 # MySQL (async) ORM related
 # -----------------------------
 SQLAlchemy==2.0.41            # SQL ORM (latest version with async support)

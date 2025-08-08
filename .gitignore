@@ -5,5 +5,4 @@ __pycache__/
 /.docker/mysql/data
 /.docker/mongo/data
 /.vscode
-/storage/logs
-/storage/uploads/ocr
+/storage/log

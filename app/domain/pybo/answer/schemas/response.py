@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import List
-
-from openai import BaseModel
+from pydantic import BaseModel
 
 from app.domain.pybo.answer.schemas.base import AnswerBase
 
