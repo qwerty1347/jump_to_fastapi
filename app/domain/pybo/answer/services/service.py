@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.answer.schemas.response import AnswerItemResponse
 from app.domain.pybo.answer.repositories.repository import AnswerRepository
+from app.domain.pybo.user.schemas.response import UserItemResponse
 
 
 class AnswerService:
@@ -66,7 +67,7 @@ class AnswerService:
         return AnswerItemResponse.model_validate(response)
 
 
-    async def create_answer(self, db: AsyncSession, create_dto: AnswerCreateRequest) -> AnswerItemResponse: 
+    async def create_answer(self, db: AsyncSession, create_dto: AnswerCreateRequest, user: UserItemResponse) -> AnswerItemResponse: 
         """
         answer 하나를 생성하는 비동기 서비스
 
@@ -77,8 +78,10 @@ class AnswerService:
         반환값:
         - AnswerItemResponse: 생성된 answer 하나가 포함된 성공 응답을 반환합니다.
         """
+        data = {**create_dto.model_dump(), "user_id": user.id}
+    
         async with db.begin():
-            response = await self.answer_repository.create_answer(db, create_dto.model_dump())
+            response = await self.answer_repository.create_answer(db, data)
             
         return AnswerItemResponse.model_validate(response)
 

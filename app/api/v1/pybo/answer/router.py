@@ -7,9 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.dependencies.dependency import parse_answer_create_form, parse_answer_query, parse_answer_update_form_payload, parse_answer_update_json_payload
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
-from app.domain.pybo.answer.schemas.response import AnswerResponse
+from app.domain.pybo.answer.schemas.response import AnswerItemResponse, AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
+from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.constants.route import RouteConstants
 from common.response import success_response
 from databases.mysql.session import get_mysql_session
@@ -59,10 +60,10 @@ async def find_answer(
     return success_response(jsonable_encoder(response))
 
 
-@router.post('/form')
+@router.post('/form', response_model=AnswerItemResponse)
 async def create_answer(
     create_dto: AnswerCreateRequest = Depends(parse_answer_create_form),
-    user = Depends(get_current_user),
+    user: UserItemResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
@@ -76,7 +77,7 @@ async def create_answer(
     반환값:
     - JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    response = await answer_service.create_answer(db, create_dto)
+    response = await answer_service.create_answer(db, create_dto, user)
     return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 

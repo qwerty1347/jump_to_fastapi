@@ -1,5 +1,3 @@
-import json
-
 from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
 from fastapi import HTTPException
@@ -56,7 +54,7 @@ class AuthService():
         return await self.find_authenticated_user(username)
     
     
-    async def find_authenticated_user(self, username: str):
+    async def find_authenticated_user(self, username: str) -> UserItemResponse:
         """사용자 인증 정보를 확인하여 User 정보를 가져오는 비동기 메서드
         
         매개변수:
@@ -67,11 +65,5 @@ class AuthService():
         """
         async with async_session() as db:
             response = await self.user_service.find_user(db=db, query_dto=UserQueryRequest(username=username))
-            
-        json_str = response.body.decode('utf-8')
-        data = json.loads(json_str)
 
-        if not data['result']:
-            raise HTTPException(status_code=HTTPStatus.INTERVAL_SERVER_ERROR, detail="server error")
-        
-        return UserItemResponse.model_validate(data['data'])
+        return UserItemResponse.model_validate(response)
