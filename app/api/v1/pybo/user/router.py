@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,15 +32,8 @@ async def create_user(
     Returns:
         JSONResponse: 생성된 User 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await user_service.create_user(db, create_dto)
-        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
-
-    except HTTPException as e:
-        raise e
-        
-    except Exception as e:
-        raise e
+    response = await user_service.create_user(db, create_dto)
+    return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 
 @router.post('/json', response_model=UserResponse)
@@ -58,15 +51,8 @@ async def create_user(
     Returns:
         JSONResponse: 생성된 User 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await user_service.create_user(db, create_dto)
-        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
-        
-    except HTTPException as e:        
-        raise e
-        
-    except Exception as e:
-        raise e
+    response = await user_service.create_user(db, create_dto)
+    return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 
 @router.get('/', response_model=UserResponse)
@@ -85,4 +71,5 @@ async def find_user(
      Returns:
          JSONResponse: 가져온 User 하나가 포함된 성공 응답을 반환합니다.
      """
-    return await user_service.find_user(db, query_dto)
+    response = await user_service.find_user(db, query_dto)
+    return success_response(jsonable_encoder(response))

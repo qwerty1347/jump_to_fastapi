@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -31,15 +31,8 @@ async def index(
     반환값:
     - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await login_service.login_for_access_token(db, login_dto)
-        return success_response(jsonable_encoder(response))
-    
-    except HTTPException as e:
-        raise e
-    
-    except Exception as e:
-        raise e
+    response = await login_service.login_for_access_token(db, login_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.post('/json', response_model=LoginTokenResponse)
@@ -57,12 +50,5 @@ async def index(
     반환값:
     - JSONResponse: 생성된 access_token이 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await login_service.login_for_access_token(db, login_dto)
-        return success_response(jsonable_encoder(response))
-
-    except HTTPException as e:
-        raise e
-
-    except Exception as e:
-        raise e
+    response = await login_service.login_for_access_token(db, login_dto)
+    return success_response(jsonable_encoder(response))

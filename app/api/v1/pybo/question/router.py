@@ -1,8 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, Path
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.services.service import AnswerService
@@ -36,15 +34,8 @@ async def get_questions(
     반환값:
     - JSONResponse: Question 리스트가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.get_questions(db, query_dto)
-        return success_response(jsonable_encoder(response))
-
-    except ValidationError as e:
-        raise RequestValidationError(errors=e.errors())
-        
-    except Exception as e:
-        raise e
+    response = await question_service.get_questions(db, query_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.get('/{question_id}', response_model=QuestionResponse)
@@ -62,15 +53,8 @@ async def find_question(
     Returns:
         JSONResponse: Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.find_question(db, question_id)
-        return success_response(jsonable_encoder(response))
-
-    except HTTPException as e:
-        raise e
-    
-    except Exception as e:
-        raise e
+    response = await question_service.find_question(db, question_id)
+    return success_response(jsonable_encoder(response))
 
 
 @router.post('/form', response_model=QuestionResponse)
@@ -88,12 +72,8 @@ async def create_question(
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.create_question(db, create_dto)
-        return success_response(jsonable_encoder(response))
-        
-    except Exception as e:
-        raise e
+    response = await question_service.create_question(db, create_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.post('/json', response_model=QuestionResponse)
@@ -111,12 +91,8 @@ async def create_question(
     Returns:
         JSONResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.create_question(db, create_dto)
-        return success_response(jsonable_encoder(response))
-    
-    except Exception as e:
-        raise e
+    response = await question_service.create_question(db, create_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.put('/form/{question_id}', response_model=QuestionResponse)
@@ -136,12 +112,8 @@ async def update_question_by_question_id(
     Returns:
         JSONResponse: 수정된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.update_question_by_question_id(db, question_id, update_dto)
-        return success_response(jsonable_encoder(response))
-        
-    except Exception as e:
-        raise e
+    response = await question_service.update_question_by_question_id(db, question_id, update_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.put('/json/{question_id}', response_model=QuestionResponse)
@@ -161,12 +133,8 @@ async def update_question_by_question_id_by_json(
     Returns:
         JSONResponse: 수정된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await question_service.update_question_by_question_id(db, question_id, update_dto)
-        return success_response(jsonable_encoder(response))
-
-    except Exception as e:
-        raise e
+    response = await question_service.update_question_by_question_id(db, question_id, update_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.delete('/{question_id}', response_model=QuestionResponse)
@@ -184,12 +152,8 @@ async def delete_question_by_question_id(
     Returns:
         JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = question_service.delete_question_by_question_id(db, question_id)
-        return success_response(jsonable_encoder(response))
-    
-    except Exception as e:
-        raise e
+    response = question_service.delete_question_by_question_id(db, question_id)
+    return success_response(jsonable_encoder(response))
 
 
 @router.get('/{question_id}/answer')
@@ -207,9 +171,5 @@ async def get_answers_by_question_id(
     반환값:
     - JSONResponse: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.get_answers_by_question_id(db, question_id)
-        return success_response(jsonable_encoder(response))
-        
-    except Exception as e:
-        raise e
+    response = await answer_service.get_answers_by_question_id(db, question_id)
+    return success_response(jsonable_encoder(response))

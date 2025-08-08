@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, Path
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse
@@ -35,12 +35,9 @@ async def get_answers(
     반환값:
     - JSONResponse: Answer 리스트가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.get_answers(db, query_dto)
-        return success_response(jsonable_encoder(response))
+    response = await answer_service.get_answers(db, query_dto)
+    return success_response(jsonable_encoder(response))
 
-    except Exception as e:
-        raise e
 
 
 @router.get('/{answer_id}', response_model=AnswerResponse)
@@ -58,15 +55,8 @@ async def find_answer(
     Returns:
         JSONResponse: Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.find_answer(db, answer_id)
-        return success_response(jsonable_encoder(response))
-    
-    except HTTPException as e:
-        raise e
-
-    except Exception as e:
-        raise e
+    response = await answer_service.find_answer(db, answer_id)
+    return success_response(jsonable_encoder(response))
 
 
 @router.post('/form')
@@ -86,12 +76,8 @@ async def create_answer(
     반환값:
     - JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.create_answer(db, create_dto)
-        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
-
-    except Exception as e:
-        raise e
+    response = await answer_service.create_answer(db, create_dto)
+    return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 
 @router.post('/json')
@@ -109,12 +95,8 @@ async def create_answer(
     Returns:
         JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.create_answer(db, create_dto)
-        return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
-        
-    except Exception as e:
-        raise e
+    response = await answer_service.create_answer(db, create_dto)
+    return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 
 @router.put('/form/{answer_id}')
@@ -134,12 +116,8 @@ async def update_answer(
     Returns:
         JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.update_answer(db, answer_id, update_dto)
-        return success_response(jsonable_encoder(response))
-    
-    except Exception as e:
-        raise e
+    response = await answer_service.update_answer(db, answer_id, update_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.put('/json/{answer_id}')
@@ -159,12 +137,8 @@ async def update_answer(
     Returns:
         JSONResponse: 수정된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.update_answer(db, answer_id, update_dto)
-        return success_response(jsonable_encoder(response))
-
-    except Exception as e:
-        raise e
+    response = await answer_service.update_answer(db, answer_id, update_dto)
+    return success_response(jsonable_encoder(response))
 
 
 @router.delete('/{answer_id}')
@@ -182,9 +156,5 @@ async def delete_answer(
     Returns:
         JSONResponse: 삭제된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    try:
-        response = await answer_service.delete_answer(db, answer_id)
-        return success_response(jsonable_encoder(response))
-        
-    except Exception as e:
-        raise e
+    response = await answer_service.delete_answer(db, answer_id)
+    return success_response(jsonable_encoder(response))
