@@ -1,14 +1,11 @@
 from http import HTTPStatus
 from fastapi import HTTPException
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.auth.services.service import AuthService
 from app.domain.pybo.login.schemas.request import LoginRequest
 from app.domain.pybo.user.repositories.repository import UserRepository
 from app.domain.pybo.user.schemas.response import UserLoginResponse
-from common.response import error_response, success_response
 from common.utils.hash import verify_context
 
 

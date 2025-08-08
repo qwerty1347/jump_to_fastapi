@@ -1,14 +1,10 @@
 from http import HTTPStatus
 from fastapi import HTTPException
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
 from app.domain.pybo.answer.schemas.response import AnswerItemResponse
 from app.domain.pybo.answer.repositories.repository import AnswerRepository
-from app.domain.pybo.user.schemas.response import UserItemResponse
-from common.response import error_response, success_response
 
 
 class AnswerService:
