@@ -29,11 +29,7 @@ async def ocr(
     반환값:
     - JSONResponse: OCR 결과를 포함하는 성공 응답 또는 오류 응답
     """
-    try:
-        validate_upload_file(file)
-        response = await ocr_service.handle_ocr(file, ocr_dto.engine.value)
+    validate_upload_file(file)
+    response = await ocr_service.handle_ocr(file, ocr_dto.engine.value)
 
-        return success_response(jsonable_encoder(response))
-        
-    except Exception as e:
-        raise e
+    return success_response(jsonable_encoder(response))
