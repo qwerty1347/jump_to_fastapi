@@ -9,6 +9,7 @@ class QuestionItemResponse(QuestionBase):
     id: int
     subject: str
     content: str
+    user_id: int
     created_at: datetime
     updated_at: datetime | None = None
 
