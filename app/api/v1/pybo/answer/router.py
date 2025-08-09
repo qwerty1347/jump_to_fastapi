@@ -84,6 +84,7 @@ async def create_answer(
 @router.post('/json')
 async def create_answer(
     create_dto: AnswerCreateRequest,
+    user: UserItemResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
@@ -96,7 +97,7 @@ async def create_answer(
     Returns:
         JSONResponse: 생성된 Answer 하나가 포함된 성공 응답을 반환합니다.
     """
-    response = await answer_service.create_answer(db, create_dto)
+    response = await answer_service.create_answer(db, create_dto, user)
     return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 

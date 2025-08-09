@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
 from app.domain.pybo.question.schemas.response import QuestionItemResponse
 from app.domain.pybo.question.repositories.repository import QuestionRepository
+from app.domain.pybo.user.schemas.response import UserItemResponse
 
 
 class QuestionService():
@@ -27,7 +28,7 @@ class QuestionService():
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size
         response = await self.question_repository.get_questions(db, skip, limit)
-        
+
         return [QuestionItemResponse.model_validate(item) for item in response]
 
 
@@ -50,20 +51,23 @@ class QuestionService():
         return QuestionItemResponse.model_validate(response)
 
 
-    async def create_question(self, db: AsyncSession, create_dto: QuestionCreateRequest) -> QuestionItemResponse:
+    async def create_question(self, db: AsyncSession, create_dto: QuestionCreateRequest, user: UserItemResponse) -> QuestionItemResponse:
         """
-        Question을 생성하는 비동기 서비스
+        Question 하나를 생성하는 비동기 서비스
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
-        - create_dto (QuestionCreateRequest): Question 생성을 위한 데이터를 전달합니다.
+        - create_dto (QuestionCreateRequest): Question 생성을 위한 폼 데이터를 전달합니다.
+        - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
 
         반환값:
         - QuestionItemResponse: 생성된 Question 하나가 포함된 성공 응답을 반환합니다.
         """
+        data = {**create_dto.model_dump(), "user_id": user.id}
+
         async with db.begin():
-            response = await self.question_repository.create_question(db, create_dto.model_dump())
-            
+            response = await self.question_repository.create_question(db, data)
+
         return QuestionItemResponse.model_validate(response)
 
 
@@ -95,8 +99,8 @@ class QuestionService():
 
         반환값:
         - dict[str, int]: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
-        """       
+        """
         async with db.begin():
             response = await self.question_repository.delete_question_by_question_id(db, question_id)
-            
+
         return {"rowcount": response}
