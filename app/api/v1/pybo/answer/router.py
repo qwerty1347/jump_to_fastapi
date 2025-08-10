@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.answer.dependencies.dependency import parse_answer_create_form, parse_answer_query, parse_answer_update_form_payload, parse_answer_update_json_payload
 from app.domain.pybo.answer.schemas.request import AnswerQueryRequest, AnswerCreateRequest, AnswerUpdateRequest
-from app.domain.pybo.answer.schemas.response import AnswerItemResponse, AnswerResponse
+from app.domain.pybo.answer.schemas.response import AnswerAffectedResponse, AnswerItemResponse, AnswerResponse
 from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from app.domain.pybo.user.schemas.response import UserItemResponse
@@ -101,7 +101,7 @@ async def create_answer(
     return success_response(jsonable_encoder(response), HTTPStatus.CREATED)
 
 
-@router.put('/form/{answer_id}')
+@router.put('/form/{answer_id}', response_model=AnswerAffectedResponse)
 async def update_answer(
     answer_id: int = Path(...),
     update_dto: AnswerUpdateRequest = Depends(parse_answer_update_form_payload),
@@ -122,7 +122,7 @@ async def update_answer(
     return success_response(jsonable_encoder(response))
 
 
-@router.put('/json/{answer_id}')
+@router.put('/json/{answer_id}', response_model=AnswerAffectedResponse)
 async def update_answer(
     answer_id: int = Path(...),
     update_dto: AnswerUpdateRequest = Depends(parse_answer_update_json_payload),
@@ -143,7 +143,7 @@ async def update_answer(
     return success_response(jsonable_encoder(response))
 
 
-@router.delete('/{answer_id}')
+@router.delete('/{answer_id}', response_model=AnswerAffectedResponse)
 async def delete_answer(
     answer_id: int = Path(...),
     db: AsyncSession = Depends(get_mysql_session)
