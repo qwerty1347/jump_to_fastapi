@@ -7,7 +7,7 @@ from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from app.domain.pybo.question.dependencies.dependency import parse_question_create_form, parse_question_update_form_payload, parse_question_update_json_payload, parse_questions_query
 from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
-from app.domain.pybo.question.schemas.response import QuestionResponse
+from app.domain.pybo.question.schemas.response import QuestionAffectResponse, QuestionResponse
 from app.domain.pybo.question.services.service import QuestionService
 from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.constants.route import RouteConstants
@@ -101,7 +101,7 @@ async def create_question(
     return success_response(jsonable_encoder(response))
 
 
-@router.put('/form/{question_id}', response_model=QuestionResponse)
+@router.put('/form/{question_id}', response_model=QuestionAffectResponse)
 async def update_question_by_question_id(
     question_id: int = Path(...),
     update_dto: QuestionUpdateRequest = Depends(parse_question_update_form_payload),
@@ -124,7 +124,7 @@ async def update_question_by_question_id(
     return success_response(jsonable_encoder(response))
 
 
-@router.put('/json/{question_id}', response_model=QuestionResponse)
+@router.put('/json/{question_id}', response_model=QuestionAffectResponse)
 async def update_question_by_question_id_by_json(
     question_id: int = Path(...),
     update_dto: QuestionUpdateRequest = Depends(parse_question_update_json_payload),
@@ -147,7 +147,7 @@ async def update_question_by_question_id_by_json(
     return success_response(jsonable_encoder(response))
 
 
-@router.delete('/{question_id}', response_model=QuestionResponse)
+@router.delete('/{question_id}', response_model=QuestionAffectResponse)
 async def delete_question_by_question_id(
     question_id: int = Path(...),
     user: UserItemResponse = Depends(get_current_user),

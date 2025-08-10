@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.pybo.question.schemas.request import QuestionCreateRequest, QuestionUpdateRequest, QuestionQueryRequest
-from app.domain.pybo.question.schemas.response import QuestionItemResponse
+from app.domain.pybo.question.schemas.response import QuestionItemAffectResponse, QuestionItemResponse
 from app.domain.pybo.question.repositories.repository import QuestionRepository
 from app.domain.pybo.user.schemas.response import UserItemResponse
 from databases.mysql.session import async_session
@@ -72,7 +72,7 @@ class QuestionService():
         return QuestionItemResponse.model_validate(response)
 
 
-    async def update_question_by_question_id(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest, user: UserItemResponse) -> dict[str, int]:
+    async def update_question_by_question_id(self, db: AsyncSession, question_id: int, update_dto: QuestionUpdateRequest, user: UserItemResponse) -> QuestionItemAffectResponse:
         """
         Question을 수정하는 비동기 서비스
 
@@ -83,21 +83,20 @@ class QuestionService():
         - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
 
         반환값:
-        - dict[str, int]: 수정된 Question의 개수가 포함된 성공 응답을 반환합니다.
+        - QuestionItemAffectResponse: 수정된 Question의 개수가 포함된 성공 응답을 반환합니다.
         """
-        async with async_session() as db:
+        async with db.begin():
             question = await self.find_question(db=db, question_id=question_id)
 
-        if question.user_id != user.id:
-            raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
+            if question.user_id != user.id:
+                raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
 
-        async with db.begin():
             response = await self.question_repository.update_question_by_question_id(db, question_id, update_dto.model_dump(exclude_unset=True))
 
-        return {"rowcount": response}
+        return QuestionItemAffectResponse.model_validate({"rowcount": response})
 
 
-    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int, user: UserItemResponse) -> dict[str, int]:
+    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int, user: UserItemResponse) -> QuestionItemAffectResponse:
         """
         Question을 삭제하는 비동기 서비스
 
@@ -107,15 +106,14 @@ class QuestionService():
         - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
 
         반환값:
-        - dict[str, int]: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
+         - QuestionItemAffectResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
         """
-        async with async_session() as db:
+        async with db.begin():
             question = await self.find_question(db=db, question_id=question_id)
 
-        if question.user_id != user.id:
-            raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
+            if question.user_id != user.id:
+                raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
 
-        async with db.begin():
             response = await self.question_repository.delete_question_by_question_id(db, question_id)
 
-        return {"rowcount": response}
+        return QuestionItemAffectResponse.model_validate({"rowcount": response})

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 from pydantic import BaseModel
 
-from app.domain.pybo.question.schemas.base import QuestionBase
+from app.domain.pybo.question.schemas.base import QuestionBase, QuestionResponseBase
 
 
 class QuestionItemResponse(QuestionBase):
@@ -14,7 +14,13 @@ class QuestionItemResponse(QuestionBase):
     updated_at: datetime | None = None
 
 
-class QuestionResponse(BaseModel):
-    result: bool
-    code: int
+class QuestionResponse(QuestionResponseBase):
     data: List[QuestionItemResponse]
+
+
+class QuestionItemAffectResponse(QuestionBase):
+    rowcount: int
+
+
+class QuestionAffectResponse(QuestionResponseBase):
+    data: QuestionItemAffectResponse
