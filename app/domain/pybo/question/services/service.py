@@ -85,13 +85,12 @@ class QuestionService():
         반환값:
         - QuestionItemAffectResponse: 수정된 Question의 개수가 포함된 성공 응답을 반환합니다.
         """
-        async with async_session() as db:
+        async with db.begin():
             question = await self.find_question(db=db, question_id=question_id)
 
-        if question.user_id != user.id:
-            raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
+            if question.user_id != user.id:
+                raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
 
-        async with db.begin():
             response = await self.question_repository.update_question_by_question_id(db, question_id, update_dto.model_dump(exclude_unset=True))
 
         return QuestionItemAffectResponse.model_validate({"rowcount": response})
@@ -109,13 +108,12 @@ class QuestionService():
         반환값:
          - QuestionItemAffectResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
         """
-        async with async_session() as db:
+        async with db.begin():
             question = await self.find_question(db=db, question_id=question_id)
 
-        if question.user_id != user.id:
-            raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
+            if question.user_id != user.id:
+                raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
 
-        async with db.begin():
             response = await self.question_repository.delete_question_by_question_id(db, question_id)
 
         return QuestionItemAffectResponse.model_validate({"rowcount": response})
