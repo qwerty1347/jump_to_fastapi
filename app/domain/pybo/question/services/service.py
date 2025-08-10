@@ -97,17 +97,24 @@ class QuestionService():
         return {"rowcount": response}
 
 
-    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int) -> dict[str, int]:
+    async def delete_question_by_question_id(self, db: AsyncSession, question_id: int, user: UserItemResponse) -> dict[str, int]:
         """
         Question을 삭제하는 비동기 서비스
 
         매개변수:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
         - question_id (int): Question 하나의 고유 ID를 전달합니다.
+        - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
 
         반환값:
         - dict[str, int]: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
         """
+        async with async_session() as db:
+            question = await self.find_question(db=db, question_id=question_id)
+
+        if question.user_id != user.id:
+            raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail="Forbidden user")
+
         async with db.begin():
             response = await self.question_repository.delete_question_by_question_id(db, question_id)
 

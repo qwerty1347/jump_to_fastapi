@@ -150,19 +150,21 @@ async def update_question_by_question_id_by_json(
 @router.delete('/{question_id}', response_model=QuestionResponse)
 async def delete_question_by_question_id(
     question_id: int = Path(...),
+    user: UserItemResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_mysql_session)
 ) -> JSONResponse:
     """
     Question을 삭제하는 엔드포인트
 
-    Args:
-        question_id (int): Question 하나의 고유 ID를 전달합니다.
-        db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+    매개변수:
+    - question_id (int): Question 하나의 고유 ID를 전달합니다.
+    - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
 
-    Returns:
-        JSONResponse: 삭제된 Question의 개수가 포함된 성공 응답을 반환합니다.
+    반환값:
+    - JSONResponse: 삭제된 Question 하나가 포함된 성공 응답을 반환합니다.
     """
-    response = question_service.delete_question_by_question_id(db, question_id)
+    response = await question_service.delete_question_by_question_id(db, question_id, user)
     return success_response(jsonable_encoder(response))
 
 
