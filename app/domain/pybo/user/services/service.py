@@ -55,6 +55,6 @@ class UserService():
             response = await self.user_repository.find_user(db, query_dto.model_dump(exclude_unset=True))
 
         if response is None:
-            raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="User not found")
+            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="User not found")
 
         return UserItemResponse.model_validate(response)
