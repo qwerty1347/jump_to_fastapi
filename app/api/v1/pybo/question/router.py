@@ -10,6 +10,7 @@ from app.domain.pybo.question.schemas.request import QuestionCreateRequest, Ques
 from app.domain.pybo.question.schemas.response import QuestionAffectResponse, QuestionResponse
 from app.domain.pybo.question.services.service import QuestionService
 from app.domain.pybo.user.schemas.response import UserItemResponse
+from app.domain.pybo.vote.services.service import VoteService
 from common.constants.route import RouteConstants
 from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
@@ -18,6 +19,7 @@ from databases.mysql.session import get_mysql_session
 router = APIRouter(prefix=RouteConstants.QUESTION_PREFIX, tags=[RouteConstants.QUESTION_TAG])
 question_service = QuestionService()
 answer_service = AnswerService()
+vote_service = VoteService()
 
 
 @router.get('/')
@@ -185,3 +187,13 @@ async def get_answers_by_question_id(
     """
     response = await answer_service.get_answers_by_question_id(db, question_id)
     return success_response(jsonable_encoder(response))
+
+
+@router.post('/{question_id}/vote')
+async def vote_question(
+    question_id: int = Path(...),
+    user: UserItemResponse = Depends(get_current_user),
+    db: AsyncSession = Depends(get_mysql_session)
+):
+    return await vote_service.vote_question(db, question_id, user)
+    
