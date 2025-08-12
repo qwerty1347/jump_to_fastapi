@@ -2,6 +2,8 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from databases.mysql.base import Base, TimestampMixin
 
+from app.domain.pybo.associations import question_voter
+
 
 class Question(Base, TimestampMixin):
     __tablename__ = "questions"
@@ -11,3 +13,4 @@ class Question(Base, TimestampMixin):
     content = Column(Text, nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     user = relationship("User", backref="question_users")
+    voter = relationship("User", secondary=question_voter, backref="question_voters")

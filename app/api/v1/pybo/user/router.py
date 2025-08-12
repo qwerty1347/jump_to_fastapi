@@ -9,7 +9,7 @@ from app.domain.pybo.user.schemas.request import UserCreateRequest, UserQueryReq
 from app.domain.pybo.user.schemas.response import UserResponse
 from app.domain.pybo.user.services.service import UserService
 from common.constants.route import RouteConstants
-from common.response import success_response
+from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
 
 

@@ -5,7 +5,7 @@ from jose import JWTError
 
 from app.domain.pybo.auth.services.service import AuthService
 from app.domain.pybo.user.schemas.response import UserItemResponse
-from common.response import error_response
+from common.utils.response import error_response
 
 
 auth_service = AuthService()

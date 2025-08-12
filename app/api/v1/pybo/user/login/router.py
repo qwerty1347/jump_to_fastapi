@@ -8,7 +8,7 @@ from app.domain.pybo.login.schemas.request import LoginRequest
 from app.domain.pybo.login.schemas.response import LoginTokenResponse
 from app.domain.pybo.login.services.service import LoginService
 from common.constants.route import RouteConstants
-from common.response import success_response
+from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
 
 

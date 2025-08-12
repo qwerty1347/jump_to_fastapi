@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.pybo.question.router import router as question_router
 from app.api.v1.pybo.answer.router import router as answer_router
 from app.api.v1.pybo.user.router import router as user_router
-from app.api.v1.pybo.login.router import router as login_router
+from app.api.v1.pybo.user.login.router import router as login_router
 
 
 router = APIRouter(prefix="/pybo")

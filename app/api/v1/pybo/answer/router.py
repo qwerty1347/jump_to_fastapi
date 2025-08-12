@@ -12,7 +12,7 @@ from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.constants.route import RouteConstants
-from common.response import success_response
+from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
 
 
