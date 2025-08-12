@@ -11,7 +11,7 @@ from app.domain.pybo.question.schemas.response import QuestionAffectResponse, Qu
 from app.domain.pybo.question.services.service import QuestionService
 from app.domain.pybo.user.schemas.response import UserItemResponse
 from common.constants.route import RouteConstants
-from common.response import success_response
+from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
 
 
