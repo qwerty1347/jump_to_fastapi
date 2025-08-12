@@ -7,6 +7,7 @@ from alembic import context
 
 from databases.mysql.base import Base
 from app.domain import pybo
+from app.domain.pybo import associations
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
