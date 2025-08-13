@@ -11,6 +11,7 @@ from app.domain.pybo.answer.schemas.response import AnswerAffectedResponse, Answ
 from app.domain.pybo.answer.services.service import AnswerService
 from app.domain.pybo.auth.dependencies.dependency import get_current_user
 from app.domain.pybo.user.schemas.response import UserItemResponse
+from app.domain.pybo.vote.services.service import VoteService
 from common.constants.route import RouteConstants
 from common.utils.response import success_response
 from databases.mysql.session import get_mysql_session
@@ -18,6 +19,7 @@ from databases.mysql.session import get_mysql_session
 
 router = APIRouter(prefix=RouteConstants.ANSWER_PREFIX, tags=[RouteConstants.ANSWER_TAG])
 answer_service = AnswerService()
+vote_service = VoteService()
 
 
 @router.get('/')
@@ -166,3 +168,24 @@ async def delete_answer(
     """
     response = await answer_service.delete_answer(db, answer_id, user)
     return success_response(jsonable_encoder(response))
+
+
+@router.post('/{answer_id}/vote')
+async def vote_answer(
+    answer_id: int = Path(...),
+    user: UserItemResponse = Depends(get_current_user),
+    db: AsyncSession = Depends(get_mysql_session)
+) -> JSONResponse:
+    """
+    Answer에 투표하는 엔드포인트
+
+    매개변수:
+    - answer_id (int): 특정 Answer의 고유 ID를 전달합니다.
+    - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    반환값:
+    - JSONResponse: 추천된 Answer 하나가 포함된 성공 응답을 반환합니다.
+    """
+    await vote_service.vote_answer(db, answer_id, user)
+    return success_response(code=HTTPStatus.CREATED)
