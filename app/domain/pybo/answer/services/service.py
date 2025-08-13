@@ -22,7 +22,7 @@ class AnswerService:
         - question_id (int): 특정 질문의 고유 ID를 전달합니다.
 
         반환값:
-        - List[AnswerItemResponse]: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
+        - list[AnswerItemResponse]: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
         """
         response = await self.answer_repository.get_answers_by_question_id(db, question_id)
         return [AnswerItemResponse.model_validate(item) for item in response]
@@ -38,7 +38,7 @@ class AnswerService:
             옵션을 정의하는 데이터를 전달합니다.
 
         반환값:
-        - List[AnswerItemResponse]: answer 목록이 포함된 성공 응답을 반환합니다.
+        - list[AnswerItemResponse]: answer 목록이 포함된 성공 응답을 반환합니다.
         """
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size

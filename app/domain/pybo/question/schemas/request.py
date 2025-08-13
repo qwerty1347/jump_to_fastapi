@@ -18,4 +18,5 @@ class QuestionUpdateRequest(QuestionBase):
 class QuestionQueryRequest(QuestionBase):
     page: int
     size: int
-    keyword: str | None = None
+    sc: str | None = None
+    query: str | None = None

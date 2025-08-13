@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 from pydantic import BaseModel
 
 from app.domain.pybo.user.schemas.base import UserBase
@@ -20,4 +19,4 @@ class UserLoginResponse(UserBase):
 class UserResponse(BaseModel):
     result: bool
     code: int
-    data: List[UserItemResponse]
+    data: list[UserItemResponse]

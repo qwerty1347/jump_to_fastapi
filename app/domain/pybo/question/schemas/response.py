@@ -1,8 +1,7 @@
 from datetime import datetime
-from typing import List
-from pydantic import BaseModel
 
 from app.domain.pybo.question.schemas.base import QuestionBase, QuestionResponseBase
+from app.domain.pybo.user.schemas.response import UserItemResponse
 
 
 class QuestionItemResponse(QuestionBase):
@@ -10,12 +9,13 @@ class QuestionItemResponse(QuestionBase):
     subject: str
     content: str
     user_id: int
+    voter: list[UserItemResponse] | None = None
     created_at: datetime
     updated_at: datetime | None = None
 
 
 class QuestionResponse(QuestionResponseBase):
-    data: List[QuestionItemResponse]
+    data: list[QuestionItemResponse]
 
 
 class QuestionItemAffectResponse(QuestionBase):

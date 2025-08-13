@@ -13,4 +13,4 @@ class Question(Base, TimestampMixin):
     content = Column(Text, nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     user = relationship("User", backref="question_users")
-    voter = relationship("User", secondary=question_voter, backref="question_voters")
+    voter = relationship("User", secondary=question_voter, backref="question_voters", lazy="selectin")

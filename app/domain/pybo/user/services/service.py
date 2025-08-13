@@ -2,6 +2,7 @@ from http import HTTPStatus
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.domain.pybo.user.models.user import User
 from app.domain.pybo.user.repositories.repository import UserRepository
 from app.domain.pybo.user.schemas.request import UserCreateModel, UserCreateRequest, UserQueryRequest
 from app.domain.pybo.user.schemas.response import UserItemResponse
@@ -40,7 +41,7 @@ class UserService():
         return UserItemResponse.model_validate(response)
 
 
-    async def find_user(self, db: AsyncSession, query_dto: UserQueryRequest) -> UserItemResponse:
+    async def find_user(self, db: AsyncSession, query_dto: UserQueryRequest) -> User | None:
         """
         User 하나를 가져오는 비동기 메서드
 

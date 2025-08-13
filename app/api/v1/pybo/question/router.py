@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from fastapi import APIRouter, Depends, Path
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -194,6 +195,18 @@ async def vote_question(
     question_id: int = Path(...),
     user: UserItemResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_mysql_session)
-):
-    return await vote_service.vote_question(db, question_id, user)
+) -> JSONResponse:
+    """
+    특정 질문 ID에 해당하는 질문을 추천하는 엔드포인트
+
+    매개변수:
+    - question_id (int): 특정 질문의 고유 ID를 전달합니다.
+    - user (UserItemResponse): 사용자의 정보를 포함하는 UserItemResponse를 전달합니다.
+    - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
+
+    반환값:
+    - JSONResponse: 추천된 Question 하나가 포함된 성공 응답을 반환합니다.
+    """
+    await vote_service.vote_question(db, question_id, user)
+    return success_response(code=HTTPStatus.CREATED)
     

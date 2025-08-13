@@ -36,14 +36,14 @@ class AuthService():
         }
 
 
-    async def validate_access_token(self, token: str):
+    async def validate_access_token(self, token: str) -> UserItemResponse:
         """토큰을 확인하여 사용자 정보를 가져오는 비동기 메서드
 
         매개변수:
         - token (str): 토큰을 전달합니다.
 
         반환값:
-        - dict[str, str]: 사용자 정보가 포함된 성공 응답을 반환합니다.
+        - UserItemResponse: User 정보를 가져옵니다.
         """
         payload = jwt.decode(token, settings.PYBO_JWT_SECRET_KEY, algorithms=[settings.PYBO_JWT_ALGORITHM])
         username = payload.get("sub")
@@ -55,15 +55,13 @@ class AuthService():
 
 
     async def find_authenticated_user(self, username: str) -> UserItemResponse:
-        """사용자 인증 정보를 확인하여 User 정보를 가져오는 비동기 메서드
+        """토큰을 확인하여 사용자 정보를 가져오는 비동기 메서드
 
         매개변수:
-        - username (str): 사용자의 username을 전달합니다.
+        - username (str): 토큰에 포함된 username을 전달합니다.
 
         반환값:
-        - UserLoginResponse: User 정보를 가져옵니다.
+        - UserItemResponse: User 정보를 가져옵니다.
         """
         async with async_session() as db:
-            response = await self.user_service.find_user(db=db, query_dto=UserQueryRequest(username=username))
-
-        return UserItemResponse.model_validate(response)
+            return await self.user_service.find_user(db=db, query_dto=UserQueryRequest(username=username))
