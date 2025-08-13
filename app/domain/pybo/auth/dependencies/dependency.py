@@ -1,11 +1,8 @@
-from http import HTTPStatus
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError
 
 from app.domain.pybo.auth.services.service import AuthService
 from app.domain.pybo.user.schemas.response import UserItemResponse
-from common.utils.response import error_response
 
 
 auth_service = AuthService()

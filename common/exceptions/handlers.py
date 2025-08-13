@@ -3,6 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from jose import JWTError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from sqlalchemy.exc import IntegrityError
 from http import HTTPStatus
 
 from common.constants.http_code import HttpCodeConstants
@@ -51,6 +52,16 @@ async def jwt_exception_handler(request: Request, exc: JWTError) -> JSONResponse
     return error_response(code=HTTPStatus.UNAUTHORIZED, message="Could not validate credentials")
 
 
+async def sqlalchemy_integrity_exception_handler(request: Request, exc: IntegrityError) -> JSONResponse:
+    """
+    sqlalchemy의 IntegrityError 예외 처리 함수
+
+    IntegrityError 예외가 발생하면
+    JSONResponse를 반환하여 클라이언트에게 에러 메시지를 전송
+    """
+    return error_response(code=HTTPStatus.CONFLICT, message="Data already exists")
+    
+
 def register_exception_handlers(app):
     """
     FastAPI 애플리케이션에 예외 처리 핸들러를 등록하는 함수
@@ -61,3 +72,4 @@ def register_exception_handlers(app):
     app.add_exception_handler(RequestValidationError, validate_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
     app.add_exception_handler(JWTError, jwt_exception_handler)
+    app.add_exception_handler(IntegrityError, sqlalchemy_integrity_exception_handler)

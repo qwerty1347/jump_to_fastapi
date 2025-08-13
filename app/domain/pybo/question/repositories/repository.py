@@ -44,7 +44,7 @@ class QuestionRepository:
         - Question | None: Question 하나가 포함된 성공 응답을 반환하거나, 실패 시 None을 반환합니다.
         """
         result = await db.execute(select(Question).where(Question.id == question_id))
-        question = result.scalars().first()
+        question = result.scalar_one_or_none()
 
         return question
 
