@@ -1,4 +1,3 @@
-from typing import List
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,7 +9,7 @@ class AnswerRepository:
         pass
 
 
-    async def get_answers_by_question_id(self, db: AsyncSession, question_id: int) -> List[Answer]:
+    async def get_answers_by_question_id(self, db: AsyncSession, question_id: int) -> list[Answer]:
         """
         특정 질문 ID에 해당하는 answer 목록을 가져오는 비동기 메서드
 
@@ -19,7 +18,7 @@ class AnswerRepository:
         - question_id (int): 특정 질문의 고유 ID를 전달합니다.
 
         반환값:
-        - List[Answer]: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
+        - list[Answer]: 특정 질문에 해당하는 answer 목록이 포함된 성공 응답을 반환합니다.
         """
         result = await db.execute(select(Answer).where(Answer.question_id == question_id).order_by(Answer.created_at.desc()))
         answers = result.scalars().all()
@@ -27,7 +26,7 @@ class AnswerRepository:
         return answers
 
 
-    async def get_answers(self, db: AsyncSession, skip: int, limit: int) -> List[Answer]:
+    async def get_answers(self, db: AsyncSession, skip: int, limit: int) -> list[Answer]:
         """
         answer 목록을 가져오는 비동기 메서드
 
@@ -37,7 +36,7 @@ class AnswerRepository:
         - limit (int): 가져올 answer의 개수를 전달합니다.
 
         반환값:
-        - List[Answer]: answer 목록이 포함된 성공 응답을 반환합니다.
+        - list[Answer]: answer 목록이 포함된 성공 응답을 반환합니다.
         """
         result = await db.execute(
             select(Answer).

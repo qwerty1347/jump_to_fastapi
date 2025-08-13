@@ -24,7 +24,7 @@ class QuestionService():
             옵션을 정의하는 데이터를 전달합니다.
 
         반환값:
-        - List[QuestionItemResponse]: Question 리스트가 포함된 성공 응답을 반환합니다.
+        - list[QuestionItemResponse]: Question 리스트가 포함된 성공 응답을 반환합니다.
         """
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size

@@ -1,4 +1,3 @@
-from typing import List
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +8,7 @@ class QuestionRepository:
     def __init__(self):
         pass
 
-    async def get_questions(self, db: AsyncSession, skip: int, limit: int) -> List[Question]:
+    async def get_questions(self, db: AsyncSession, skip: int, limit: int) -> list[Question]:
         """
         Question 리스트를 가져오는 비동기 메서드
 
@@ -19,7 +18,7 @@ class QuestionRepository:
         - limit (int): 가져올 Question의 개수를 전달합니다. 기본값은 10입니다.
 
         반환값:
-        - List[Question]: Question 리스트가 포함된 성공 응답을 반환합니다.
+        - list[Question]: Question 리스트가 포함된 성공 응답을 반환합니다.
         """
         result = await db.execute(
             select(Question)
