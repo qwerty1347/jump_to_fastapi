@@ -28,7 +28,12 @@ class QuestionService():
         """
         skip = (query_dto.page - 1) * query_dto.size
         limit = query_dto.size
-        response = await self.question_repository.get_questions(db, skip, limit)
+        
+        category = "all" if query_dto.sc is None else query_dto.sc
+        keyword = query_dto.query if query_dto.query is not None else None
+        search = {"category": category, "keyword": keyword} if keyword is not None else None
+        
+        response = await self.question_repository.get_questions(db, skip, limit, search)
 
         return [QuestionItemResponse.model_validate(item) for item in response]
 

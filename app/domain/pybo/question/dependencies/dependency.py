@@ -52,16 +52,20 @@ def parse_question_update_json_payload(update_dto: QuestionUpdateRequest = Body(
 
 def parse_questions_query(
     page: int = Query(1, ge=1),
-    size: int = Query(10, ge=1, le=30)
+    size: int = Query(10, ge=1, le=30),
+    sc: str | None = Query(None),
+    query: str | None = Query(None)
 ) -> QuestionQueryRequest:
     """
-    Question 리스트를 쿼리하는 엔드포인트에서 사용하는 쿼리 파라미터를 반환하는 함수
+    Question 리스트를 가져오는 쿼리 파라미터를 파싱하는 함수
 
     매개변수:
-    - page (int): 페이지 번호를 전달합니다. 기본값은 0입니다.
-    - size (int): 페이지 당 Question의 개수를 전달합니다. 기본값은 10이며, 최소값은 1, 최대값은 30입니다.
+    - page (int): 페이지 번호를 전달합니다. 기본값은 1이며, 1 이상의 값을 가집니다.
+    - size (int): 페이지당 Question의 개수를 전달합니다. 기본값은 10이며, 1 이상 30 이하의 값을 가집니다.
+    - sc (str | None): 검색 카테고리를 전달합니다. 기본값은 None입니다.
+    - query (str | None): 검색어를 전달합니다. 기본값은 None입니다.
 
     반환값:
-    - QuestionQueryRequest: Question 리스트를 쿼리하기 위한 데이터를 전달합니다.
+    - QuestionQueryRequest: Question 리스트를 가져오기 위한 쿼리 데이터를 전달합니다.
     """
-    return QuestionQueryRequest(page=page, size=size)
+    return QuestionQueryRequest(page=page, size=size, sc=sc, query=query)

@@ -1,14 +1,17 @@
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, or_, select, update
+from sqlalchemy.orm import aliased
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.domain.pybo.answer.models.answer import Answer
 from app.domain.pybo.question.models.question import Question
+from app.domain.pybo.user.models.user import User
 
 
 class QuestionRepository:
     def __init__(self):
         pass
 
-    async def get_questions(self, db: AsyncSession, skip: int, limit: int) -> list[Question]:
+    async def get_questions(self, db: AsyncSession, skip: int, limit: int, search: dict | None) -> list[Question]:
         """
         Question 리스트를 가져오는 비동기 메서드
 
@@ -16,17 +19,55 @@ class QuestionRepository:
         - db (AsyncSession): 비동기 데이터베이스 세션을 사용합니다.
         - skip (int): 건너뛸 Question의 개수를 전달합니다. 기본값은 0입니다.
         - limit (int): 가져올 Question의 개수를 전달합니다. 기본값은 10입니다.
+        - search (dict | None): 검색 카테고리와 검색 키워드를 포함하는 딕셔너리를 전달합니다. 매개변수가 None이면 모든 Question을 가져옵니다.
 
         반환값:
         - list[Question]: Question 리스트가 포함된 성공 응답을 반환합니다.
+        
+        쿼리:
+        SELECT DISTINCT q.*
+        FROM questions AS q
+            LEFT JOIN users AS qu ON q.user_id = qu.id
+            LEFT JOIN answers AS a ON a.question_id = q.id
+            LEFT JOIN users AS au ON a.user_id = au.id
+        WHERE q.subject LIKE :search
+            OR q.content LIKE :search
+            OR qu.username LIKE :search
+            OR a.content LIKE :search
+            OR au.username LIKE :search
+        ORDER BY q.created_at DESC
+        LIMIT :skip, :limit;        
         """
-        result = await db.execute(
-            select(Question)
-            .order_by(Question.created_at.desc())
-            .offset(skip)
-            .limit(limit)
-        )
-        questions = result.scalars().all()
+        keyword = search.get("keyword", "").strip() if search is not None else None
+
+        q = aliased(Question, name="q")
+
+        stmt = select(q).distinct()
+        
+        if keyword:
+            qu = aliased(User, name="qu")
+            a = aliased(Answer, name="a")
+            au = aliased(User, name="au")
+            
+            stmt = (
+                stmt.outerjoin(qu, q.user_id == qu.id)
+                .outerjoin(a, a.question_id == q.id)
+                .outerjoin(au, a.user_id == au.id)
+                .filter(
+                    or_(
+                        q.subject.ilike(f"%{keyword}%"),
+                        q.content.ilike(f"%{keyword}%"),
+                        qu.username.ilike(f"%{keyword}%"),
+                        a.content.ilike(f"%{keyword}%"),
+                        au.username.ilike(f"%{keyword}%")
+                    )
+                )
+            )
+
+        stmt = stmt.order_by(q.created_at.desc()).offset(skip).limit(limit)
+        
+        result = await db.execute(stmt)
+        questions = result.scalars().unique().all()
 
         return questions
 
