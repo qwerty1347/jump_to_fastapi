@@ -48,3 +48,9 @@ passlib                       # Password hashing utility (supports multiple sche
 # JWT Token Handling
 # -----------------------------
 python-jose[cryptography]     # JWT creation and verification using cryptographic algorithms
+
+# -----------------------------
+# Testing
+# -----------------------------
+pytest                        # Python testing framework / test runner
+pytest-asyncio                # pytest plugin to test async functions (async def) in FastAPI
