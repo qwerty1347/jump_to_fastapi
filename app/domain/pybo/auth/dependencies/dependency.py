@@ -22,4 +22,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> UserItemRespo
     반환값:
     - UserItemResponse: User 정보를 가져옵니다.
     """
-    return await auth_service.validate_access_token(token)
+    username = await auth_service.validate_access_token(token)
+    return await auth_service.find_authenticated_user(username)

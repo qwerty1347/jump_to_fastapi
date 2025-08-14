@@ -36,14 +36,14 @@ class AuthService():
         }
 
 
-    async def validate_access_token(self, token: str) -> UserItemResponse:
+    async def validate_access_token(self, token: str) -> str:
         """토큰을 확인하여 사용자 정보를 가져오는 비동기 메서드
 
         매개변수:
         - token (str): 토큰을 전달합니다.
 
         반환값:
-        - UserItemResponse: User 정보를 가져옵니다.
+        - username (str): 토큰에 포함된 username을 가져옵니다.
         """
         payload = jwt.decode(token, settings.PYBO_JWT_SECRET_KEY, algorithms=[settings.PYBO_JWT_ALGORITHM])
         username = payload.get("sub")
@@ -51,7 +51,7 @@ class AuthService():
         if username is None:
             raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid token")
 
-        return await self.find_authenticated_user(username)
+        return username
 
 
     async def find_authenticated_user(self, username: str) -> UserItemResponse:
