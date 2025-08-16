@@ -17,6 +17,15 @@ FastAPI 기반의 Q&A(질문-답변) 서비스로, '점프 투 FastAPI' 도서 �
 
 ![기술 스택](storage/screenshots/tech-stack.png)
 
+### 주요 버전 정보
+- **Python**: 3.8+
+- **FastAPI**: 0.110.0
+- **Pydantic**: 2.11.5
+- **데이터베이스**:
+  - SQLAlchemy 2.0.41 (ORM)
+  - aiomysql 0.2.0 (비동기 MySQL 클라이언트)
+  - motor 3.7.1 (비동기 MongoDB 클라이언트)
+
 ### 개발 도구
 - 테스트: pytest, pytest-asyncio
 - 문서화: Swagger UI, ReDoc (FastAPI 기본 제공)
