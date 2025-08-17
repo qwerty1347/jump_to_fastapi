@@ -36,8 +36,8 @@ class AuthService():
         }
 
 
-    async def validate_access_token(self, token: str) -> str:
-        """토큰을 확인하여 사용자 정보를 가져오는 비동기 메서드
+    def verify_access_token(self, token: str) -> str:
+        """토큰을 확인하여 사용자 정보를 가져오는 동기 메서드
 
         매개변수:
         - token (str): 토큰을 전달합니다.
