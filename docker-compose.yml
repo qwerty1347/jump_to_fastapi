@@ -37,9 +37,12 @@ services:
     volumes:
       - ./:/app
     ports:
-      - "9094:9094"
+      - "9094:8000"
     networks:
       - local_network
+    environment:
+      DB_HOST: jump_to_fastapi-mysql
+      MONGO_DB_HOST: jump_to_fastapi-mongodb
 
 networks:
   local_network:
