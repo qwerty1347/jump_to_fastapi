@@ -15,8 +15,8 @@ class VoteService():
         self.answer_repository = AnswerRepository()
         self.user_repository = UserRepository()
         self.vote_repository = VoteRepository()
-    
-    
+
+
     async def vote_question(self, db: AsyncSession, question_id: int, user: UserItemResponse):
         """
         질문 하나에 대한 추천을 처리하는 비동기 서비스
@@ -33,13 +33,13 @@ class VoteService():
             question = await self.question_repository.find_question(db=db, question_id=question_id)
 
             if question is None:
-                raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Question not found")
+                raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Question not found")
 
             user = await self.user_repository.find_user(db, {"username": user.username})
-            
+
             await self.vote_repository.vote_question(user, question)
-            
-            
+
+
     async def vote_answer(self, db: AsyncSession, answer_id: int, user: UserItemResponse):
         """
         답변 하나에 대한 추천을 처리하는 비동기 서비스
@@ -54,10 +54,10 @@ class VoteService():
         """
         async with db.begin():
             answer = await self.answer_repository.find_answer(db, answer_id)
-            
+
             if answer is None:
-                raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Answer not found")
-            
+                raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Answer not found")
+
             user = await self.user_repository.find_user(db, {"username": user.username})
-                                                        
+
             await self.vote_repository.vote_answer(user, answer)

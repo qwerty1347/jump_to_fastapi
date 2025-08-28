@@ -42,7 +42,6 @@ async def get_answers(
     return success_response(jsonable_encoder(response))
 
 
-
 @router.get('/{answer_id}', response_model=AnswerResponse)
 async def find_answer(
     answer_id: int = Path(...),

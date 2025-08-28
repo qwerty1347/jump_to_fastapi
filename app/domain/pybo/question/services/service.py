@@ -6,7 +6,6 @@ from app.domain.pybo.question.schemas.request import QuestionCreateRequest, Ques
 from app.domain.pybo.question.schemas.response import QuestionItemAffectResponse, QuestionItemResponse
 from app.domain.pybo.question.repositories.repository import QuestionRepository
 from app.domain.pybo.user.schemas.response import UserItemResponse
-from databases.mysql.session import async_session
 
 
 class QuestionService():
@@ -52,7 +51,7 @@ class QuestionService():
         response = await self.question_repository.find_question(db, question_id)
 
         if response is None:
-            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Question not found")
+            raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Question not found")
 
         return QuestionItemResponse.model_validate(response)
 
