@@ -20,8 +20,8 @@ def success_response(data: dict = None, code: int = HTTPStatus.OK) -> JSONRespon
         data = {}
 
     return JSONResponse(
-        status_code = code,
-        content = {
+        status_code=code,
+        content={
             "result": True,
             "code": code,
             "data": data
@@ -29,7 +29,7 @@ def success_response(data: dict = None, code: int = HTTPStatus.OK) -> JSONRespon
     )
 
 
-def error_response(code: int = HttpCodeConstants.UNKNOWN_ERROR, message: str = "Internal Server Error") -> JSONResponse:
+def error_response(code: int = HttpCodeConstants.UNKNOWN_ERROR, message: str = "Unknown Server Error") -> JSONResponse:
     """
     오류 응답을 생성하는 함수
 
@@ -41,8 +41,8 @@ def error_response(code: int = HttpCodeConstants.UNKNOWN_ERROR, message: str = "
     - JSONResponse: FastAPI의 JSON 응답 객체로, 오류 정보를 담고 있습니다.
     """
     return JSONResponse(
-        status_code = code,
-        content = {
+        status_code=code,
+        content={
             "result": False,
             "code": code,
             "message": message
