@@ -17,8 +17,9 @@ FastAPI 기반의 Q&A(질문-답변) 서비스로, '점프 투 FastAPI' 도서 �
 
 ![기술 스택](storage/screenshots/tech-stack.png)
 
+
 ### 주요 버전 정보
-- **Python**: 3.8+
+- **Python**: 3.11
 - **FastAPI**: 0.110.0
 - **Pydantic**: 2.11.5
 - **데이터베이스**:
@@ -26,9 +27,14 @@ FastAPI 기반의 Q&A(질문-답변) 서비스로, '점프 투 FastAPI' 도서 �
   - aiomysql 0.2.0 (비동기 MySQL 클라이언트)
   - motor 3.7.1 (비동기 MongoDB 클라이언트)
 
+
 ### 개발 도구
 - 테스트: pytest, pytest-asyncio
-- 문서화: Swagger UI, ReDoc (FastAPI 기본 제공)
+- 문서화: Swagger UI, ReDoc
+
+
+### Swagger UI
+[Notion에서 보기](https://www.notion.so/FastAPI-jump_to_fastapi-27c4e65ad833801f894ced148620dfdd?source=copy_link)
 
 
 ## 🏗️ 프로젝트 구조
@@ -106,6 +112,7 @@ fastapi-qna/
 ├── alembic.ini                  # Alembic 설정
 └── requirements.txt             # 의존성 목록
 ```
+
 
 ## ✨ 기능 목록
 
